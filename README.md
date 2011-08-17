@@ -30,21 +30,23 @@ Requirements
 
 Example usage
 -------
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-	<script src="js/gallery.js"></script>
-	<script>
-	$(function() {
-		images = ["images/image1.jpg", "images/image2.jpg", "images/image3.jpg"]; //array of paths to images
-		gallery = new gallery();
-		gallery.init(images);
-		$('#toggle').click(function(){
-			gallery.toggleSize();
-		});
-		$('#previous').click(function(){
-			gallery.previous();
-		});
-		$('#next').click(function(){
-			gallery.next();
-		});
+```html
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+<script src="js/gallery.js"></script>
+<script>
+$(function() {
+	images = ["images/image1.jpg", "images/image2.jpg", "images/image3.jpg"]; //array of paths to images
+	gallery = new gallery();
+	gallery.init(images);
+	$('#toggle').click(function(){
+		gallery.toggleSize();
 	});
-	</script>
+	$('#previous').click(function(){
+		gallery.previous();
+	});
+	$('#next').click(function(){
+		gallery.next();
+	});
+});
+</script>
+```
