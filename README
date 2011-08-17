@@ -1,5 +1,6 @@
 mrsi gallery is a simple full screen background image gallery that uses CSS3 background-size attribute instead of JavaScript for completely filling up the browser window with images.
-It even (somewhat) works with IE < 9 but then it switches to filter attributes.
+
+It works in most modern browsers (http://www.w3schools.com/cssref/css3_pr_background-size.asp) and it even (somewhat) works with IE < 9 but then it switches to filter attributes.
 
 I needed something like that for my new website (WIP: http://mr.si/index2.php) and I didn't find anything like it so I made this from scratch.
 
