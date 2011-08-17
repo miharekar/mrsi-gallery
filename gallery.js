@@ -2,7 +2,7 @@ function gallery()
 {
 	this.init = init;
 	this.setImages = setImages;
-	this.toggleSize = toggleSize;
+	this.toggleType = toggleType;
 	this.next = next;
 	this.previous = previous;
 	this.changeTo = changeTo;
@@ -15,6 +15,7 @@ function gallery()
 	var transitionTime = 1000;
 	var images = new Array();
 	var imagesMax = 0;
+	var type = 'cover';
 	
 	function init(images)
 	{
@@ -37,19 +38,16 @@ function gallery()
 		transitionTime = time;
 	}
 	
-	function toggleSize()
+	function toggleType()
 	{
 		if (!running && !isTerribleBrowser)
 		{
 			running = true;
-			var type = ($('.background').css('background-size') === 'cover') ? 'contain' : 'cover';
+			oldType = type;
+			type = (type === 'cover') ? 'contain' : 'cover';
 			$('.background').fadeOut('', function()
 			{
-				$(this)
-					.css('-webkit-background-size', type)
-					.css('-moz-background-size', type)
-					.css('-o-background-size', type)
-					.css('background-size', type)
+				$(this).removeClass(oldType).addClass(type)
 					.fadeIn('', function()
 					{
 						running = false;
@@ -111,7 +109,7 @@ function gallery()
 		}
 		else
 		{
-			$('.new').css('background-image', "url('" + image + "')");
+			$('.new').css('background-image', "url('" + image + "')").addClass(type);
 		}
 	}
 	
