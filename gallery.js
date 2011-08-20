@@ -6,7 +6,7 @@ function gallery()
 	this.next = next;
 	this.previous = previous;
 	this.changeTo = changeTo;
-	this.setTransitionTime = setTransitionTime;
+	this.setKeyboardShortcuts = setKeyboardShortcuts;
 	
 	var isTerribleBrowser = false;
 	var emptyDiv = '<div class="background new"></div>';
@@ -17,25 +17,23 @@ function gallery()
 	var imagesMax = 0;
 	var type = 'cover';
 	
-	function init(images)
+	function init(images, shuffle)
 	{
 		detectTerribleBrowser();
 		$('body').append('<div class="background new" style="display: none;"></div><img id="hiddenImg"/><div id="loading"></div>');
-		setImages(images);
+		setImages(images, shuffle);
 		fadeInFirstImage();
-		setKeyboardShortcuts();
 	}
 	
-	function setImages(json)
+	function setImages(json, shuffle)
 	{
+		if (shuffle)
+		{
+			json = randomizeArray(json);
+		}
 		images = json;
 		imagesMax = images.length - 1;
 		current = 0;
-	}
-	
-	function setTransitionTime(time)
-	{
-		transitionTime = time;
 	}
 	
 	function toggleType()
@@ -148,5 +146,18 @@ function gallery()
 				if (e.keyCode == 37 || e.keyCode == 40) previous();
 			}
 		});
+	}
+	
+	function randomizeArray(array)
+	{
+		var tmp, current, top = array.length;
+		if (top) while(--top)
+		{
+			current = Math.floor(Math.random() * (top + 1));
+			tmp = array[current];
+			array[current] = array[top];
+			array[top] = tmp;
+		}
+		return array;
 	}
 }
