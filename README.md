@@ -21,7 +21,7 @@ It's still very much work in progress so any ideas / bug reports /suggestions ar
 Demo
 -------
 
-The demo is (for now) available only at: http://mr.si/index2.php
+The demo is available in the folder demo (download and try localy) or online at: http://mr.si/index2.php
 
 Requirements
 -------
