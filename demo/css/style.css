@@ -1,0 +1,91 @@
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	vertical-align: baseline;
+}
+
+body {
+	background-color: #000;
+}
+
+.background {
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+	background-position: center center;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 5;
+}
+
+.contain {
+	-webkit-background-size: contain;
+	-moz-background-size: contain;
+	-o-background-size: contain;
+	background-size: contain;
+}
+
+.cover {
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+.new {
+	z-index: 0;
+}
+
+#hiddenImg {
+	display: none;
+}
+
+#loading {
+	position: absolute;
+	display: block;
+	margin-top: -21px;
+	left: 50%;
+	top: 50%;
+	width: 43px;
+	height: 43px;
+	background-color: black;
+	background-image: url(http://mr.si/img/ajax-loader.gif);
+	background-position: center center;
+	background-repeat: no-repeat;
+	z-index: 999;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	-o-border-radius: 10px;
+	border-radius: 10px;
+	display: none;
+	border: 3px solid #D8D8D8;
+}
+
+#controls {
+	top:  10%;
+	left: 10%;
+	z-index: 10;
+	position: absolute;
+	padding: 5px;
+	background-color: #FFF;
+	border: 2px dashed #000;
+	list-style-type: none;
+	cursor: pointer;
+}
+
+#controls li:hover {
+	color: #999;
+}
+
+#content {
+	top:  10%;
+	right: 10%;
+	z-index: 10;
+	position: absolute;
+	padding: 5px;
+	background-color: #FFF;
+	border: 2px dashed #000;
+}

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>mrsi gallery demo</title>
+	<link rel="shortcut icon" href="favicon.ico">
+	<!--[if lt IE 9]><script src="js/html5.js"></script><![endif]-->
+	<script src="js/script.min.js"></script>
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<ul id="controls">
+	<li id="next">Next</li>
+	<li id="previous">Previous</li>
+	<li id="toggle">Toggle size</li>
+</ul>
+<div id="content">
+<p>Just a simple demo of <a href="https://github.com/mrfoto/mrsi-gallery/">mrsi gallery</a>. Have a look at source for more info.</p>
+</div>
+<script>
+	//our array of images
+	var images = [];
+	for (i=0; i<13; i++)
+	{
+		images[i] = 'img/tumblrbg' + i + '.jpg';
+	}
+	
+	//load jQuery and gallery with $script.js - https://github.com/ded/script.js
+	$script('https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js', 'jquery');
+	$script('../gallery.js', 'gallery');
+	
+	$script.ready(['jquery', 'gallery'], function()
+	{	
+		//init the mrsi gallery and set the images with shuffle parameter set to true
+		gallery = new gallery();
+		gallery.init(images, true);
+		
+		//set menu controls
+		$('#toggle').click(function(){
+			gallery.toggleType();
+		});
+		$('#previous').click(function(){
+			gallery.previous();
+		});
+		$('#next').click(function(){
+			gallery.next();
+		});
+
+		//set keyboard shortcuts
+		gallery.setKeyboardShortcuts();
+	});
+</script>
+</body>
+</html>
