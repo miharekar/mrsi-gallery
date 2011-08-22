@@ -71,7 +71,7 @@
 
 		function detectTerribleBrowser() {
 			if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)) {
-				isTerribleBrowser = Number(RegExp.$1) < 9;
+				isTerribleBrowser = parseFloat(RegExp.$1, 10) < 9;
 			}
 		}
 	
@@ -123,9 +123,18 @@
 				}
 			});
 		}
-	
+		
+		// makes a copy of the original array so it returns the
+		// shuffled array without changing the original	
+		// (implementation of the Fisher-Yates shuffle)
 		function randomizeArray(array) {
-			var arrayCopy = array.slice().sort(function() { return 0.5 - Math.random(); });
+			var tmp, arrayCopy = array.slice(), i = arrayCopy.length, j;
+			while (--i) {
+				j = Math.round(Math.random() * i);
+				tmp = arrayCopy[j];
+				arrayCopy[j] = arrayCopy[i];
+				arrayCopy[i] = tmp;
+			}
 			return arrayCopy;
 		}
 	};
