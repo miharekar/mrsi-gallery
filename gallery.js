@@ -8,7 +8,7 @@
 		var emptyDiv          = '<div class="background new"></div>';
 		var running           = false;
 		var current           = 0;
-		var transitionTime    = 2000;
+		var transitionTime    = 1000;
 		var images            = [];
 		var imagesMax         = 0;
 		var type              = 'cover';
