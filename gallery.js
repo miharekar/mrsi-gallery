@@ -85,12 +85,15 @@
 		}
 	
 		function addBackgroundImage(image) {
+			var n = $('.new');
 			if (isTerribleBrowser) {
 				var filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + image + "', sizingMethod='scale')";
-				$('.new').css('filter', filter);
-				$('.new').css('-ms-filter', '"' + filter + '"');
+				n.css({
+					'filter': filter,
+					'-ms-filter': filter
+				});
 			} else {
-				$('.new').css('background-image', "url('" + image + "')").addClass(type);
+				n.css('background-image', "url(" + image + ")").addClass(type);
 			}
 		}
 	
