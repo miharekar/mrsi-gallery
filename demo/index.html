@@ -26,28 +26,28 @@
 	}
 	
 	//load jQuery and gallery with $script.js - https://github.com/ded/script.js
-	$script('https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js', 'jquery');
-	$script('../gallery.js', 'gallery');
-	
-	$script.ready(['jquery', 'gallery'], function()
+	$script('https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js', function()
 	{	
-		//init the mrsi gallery and set the images with shuffle parameter set to true
-		gallery = new gallery();
-		gallery.init(images, true);
-		
-		//set menu controls
-		$('#toggle').click(function(){
-			gallery.toggleType();
+		$script('../gallery.js', function()
+		{
+			//init the mrsi gallery and set the images with shuffle parameter set to true
+			gallery = new gallery();
+			gallery.init(images, true);
+			
+			//set menu controls
+			$('#toggle').click(function(){
+				gallery.toggleType();
+			});
+			$('#previous').click(function(){
+				gallery.previous();
+			});
+			$('#next').click(function(){
+				gallery.next();
+			});
+	
+			//set keyboard shortcuts
+			gallery.setKeyboardShortcuts();
 		});
-		$('#previous').click(function(){
-			gallery.previous();
-		});
-		$('#next').click(function(){
-			gallery.next();
-		});
-
-		//set keyboard shortcuts
-		gallery.setKeyboardShortcuts();
 	});
 </script>
 </body>
