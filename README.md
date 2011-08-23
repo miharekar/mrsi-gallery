@@ -45,7 +45,7 @@ Example usage
 		$script.domReady(function ()
 		{
 			//init the mrsi gallery and set the images with shuffle parameter set to true
-			var gallery = window.gallery.newGallery(images, {shuffle: true});
+			var gallery = new window.gallery(images, true);
 			
 			//set menu controls
 			$('#toggle').click(function(){
