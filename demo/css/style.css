@@ -35,10 +35,6 @@ body {
 	background-size: cover;
 }
 
-.new {
-	z-index: 0;
-}
-
 #hiddenImg {
 	display: none;
 }

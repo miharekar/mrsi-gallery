@@ -31,22 +31,21 @@
 		$script('../gallery.js', function()
 		{
 			//init the mrsi gallery and set the images with shuffle parameter set to true
-			gallery = new gallery();
-			gallery.init(images, true);
+			var myGallery = new gallery(images, true);
 			
 			//set menu controls
 			$('#toggle').click(function(){
-				gallery.toggleType();
+				myGallery.toggleType();
 			});
 			$('#previous').click(function(){
-				gallery.previous();
+				myGallery.previous();
 			});
 			$('#next').click(function(){
-				gallery.next();
+				myGallery.next();
 			});
 	
 			//set keyboard shortcuts
-			gallery.setKeyboardShortcuts();
+			myGallery.setKeyboardShortcuts();
 		});
 	});
 </script>

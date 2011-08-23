@@ -1,27 +1,34 @@
 (function($) {
 
 	// export the constructor function to the global namespace
-	window.gallery = function() {
-		this.init = init;
-		this.setImages = setImages;
-		this.toggleType = toggleType;
-		this.next = next;
-		this.previous = previous;
-		this.changeTo = changeTo;
-		this.setKeyboardShortcuts = setKeyboardShortcuts;
-	
+	window.gallery = function(imageList, shuffle) {
+		
+		// private variable
 		var isTerribleBrowser = false;
-		var emptyDiv = '<div class="background new"></div>';
-		var running = false;
-		var current = 0;
-		var transitionTime = 1000;
-		var images = new Array();
-		var imagesMax = 0;
-		var type = 'cover';
-	
+		var emptyDiv          = '<div class="background new"></div>';
+		var running           = false;
+		var current           = 0;
+		var transitionTime    = 2000;
+		var images            = [];
+		var imagesMax         = 0;
+		var type              = 'cover';
+		var backgroundDiv     = $(emptyDiv).hide().appendTo('body');
+		var hiddenImg         = $('<img id="hiddenImg"/>').appendTo('body');
+		var loadingDiv        = $('<div id="loading"></div>').appendTo('body');
+		
+		// widget API
+		this.setImages            = setImages;
+		this.toggleType           = toggleType;
+		this.next                 = next;
+		this.previous             = previous;
+		this.changeTo             = changeTo;
+		this.setKeyboardShortcuts = setKeyboardShortcuts;
+		
+		// initialize the widget
+		init(imageList, shuffle);
+		
 		function init(images, shuffle) {
 			detectTerribleBrowser();
-			$('body').append('<div class="background new" style="display: none;"></div><img id="hiddenImg"/><div id="loading"></div>');
 			setImages(images, shuffle);
 			fadeInFirstImage();
 		}
@@ -37,10 +44,10 @@
 	
 		function toggleType() {
 			if (!running && !isTerribleBrowser) {
+				var oldType = type;
 				running = true;
-				oldType = type;
 				type = (type === 'cover') ? 'contain' : 'cover';
-				$('.background').fadeOut('', function() {
+				backgroundDiv.fadeOut('', function() {
 					$(this).removeClass(oldType).addClass(type).
 						fadeIn('', function() {
 							running = false;
@@ -76,40 +83,40 @@
 		}
 	
 		function fadeInFirstImage() {
-			$('#hiddenImg').
+			hiddenImg.
 				attr('src', images[current]).
 				load(function() {
-					addBackgroundImage(images[current]);
-					$('.new').fadeIn(transitionTime);
+					addBackgroundImage(images[current], backgroundDiv);
+					backgroundDiv.fadeIn(transitionTime);
 				});	
 		}
 	
-		function addBackgroundImage(image) {
-			var n = $('.new');
+		function addBackgroundImage(image, el) {
 			if (isTerribleBrowser) {
 				var filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + image + "', sizingMethod='scale')";
-				n.css({
+				el.css({
 					'filter': filter,
 					'-ms-filter': filter
 				});
 			} else {
-				n.css('background-image', "url(" + image + ")").addClass(type);
+				el.css('background-image', 'url(' + image + ')').addClass(type);
 			}
 		}
 	
 		function changeImage() {
 			if (!running) {
+				var oldDiv = backgroundDiv;
+				backgroundDiv = $(emptyDiv).insertBefore(oldDiv);
 				running = true;
-				$('#loading').show();
-				$('.new').addClass('old').removeClass('new');
-				$('body').append(emptyDiv);
-				$('#hiddenImg').
+				loadingDiv.show();
+				oldDiv.addClass('old').removeClass('new');
+				hiddenImg.
 					attr('src', images[current]).
 					load(function() {
-						addBackgroundImage(images[current]);
-						$('#loading').hide();
-						$('.old').fadeOut(transitionTime, function() {
-							$(this).remove()
+						addBackgroundImage(images[current], backgroundDiv);
+						loadingDiv.hide();
+						oldDiv.fadeOut(transitionTime, function() {
+							$(this).remove();
 							running = false;
 						});
 					});
