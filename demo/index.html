@@ -20,16 +20,13 @@
 <script>
 	//our array of images
 	var images = [];
-	for (i=0; i<13; i++)
-	{
+	for (var i = 0; i < 13; i++) {
 		images[i] = 'img/tumblrbg' + i + '.jpg';
 	}
 	
 	//load jQuery and gallery with $script.js - https://github.com/ded/script.js
-	$script('https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js', function()
-	{	
-		$script('../gallery.js', function()
-		{
+	$script('https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js', function() {	
+		$script('../gallery.js', function() {
 			//init the mrsi gallery and set the images with shuffle parameter set to true
 			var myGallery = new gallery(images, true);
 			
