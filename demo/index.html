@@ -18,21 +18,24 @@
 <p>Just a simple demo of <a href="https://github.com/mrfoto/mrsi-gallery/">mrsi gallery</a>. Have a look at source for more info.</p>
 </div>
 <script>
+(function () {
 	//our array of images
 	var images = [];
-	for (i=0; i<13; i++)
+	for (var i=0; i<13; i++)
 	{
 		images[i] = 'img/tumblrbg' + i + '.jpg';
 	}
 	
 	//load jQuery and gallery with $script.js - https://github.com/ded/script.js
-	$script('https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js', function()
-	{	
-		$script('../gallery.js', function()
+	$script('https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js', 'jquery');
+	$script('../gallery.js', 'gallery');
+	
+	$script.ready('gallery', function()
+	{
+		jQuery(function ()
 		{
 			//init the mrsi gallery and set the images with shuffle parameter set to true
-			gallery = new gallery();
-			gallery.init(images, true);
+			var gallery = window.gallery.newGallery(images, {shuffle: true});
 			
 			//set menu controls
 			$('#toggle').click(function(){
@@ -49,6 +52,7 @@
 			gallery.setKeyboardShortcuts();
 		});
 	});
+}) ();
 </script>
 </body>
 </html>
