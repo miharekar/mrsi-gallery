@@ -1,144 +1,161 @@
-(function($) {
+$script.ready('jquery', function () {
+	(function($, window) {
 
-	// export the constructor function to the global namespace
-	window.gallery = function() {
-		this.init = init;
-		this.setImages = setImages;
-		this.toggleType = toggleType;
-		this.next = next;
-		this.previous = previous;
-		this.changeTo = changeTo;
-		this.setKeyboardShortcuts = setKeyboardShortcuts;
-	
-		var isTerribleBrowser = false;
-		var emptyDiv = '<div class="background new"></div>';
-		var running = false;
-		var current = 0;
-		var transitionTime = 1000;
-		var images = new Array();
-		var imagesMax = 0;
-		var type = 'cover';
-	
-		function init(images, shuffle) {
-			detectTerribleBrowser();
+		var gallery = function (images, opts) {
+			var opts = opts || {shuffle: false};
+			
+			this.detectTerribleBrowser();
 			$('body').append('<div class="background new" style="display: none;"></div><img id="hiddenImg"/><div id="loading"></div>');
-			setImages(images, shuffle);
-			fadeInFirstImage();
-		}
-	
-		function setImages(json, shuffle) {
-			if (shuffle) {
-				json = randomizeArray(json);
-			}
-			images = json;
-			imagesMax = images.length - 1;
-			current = 0;
-		}
-	
-		function toggleType() {
-			if (!running && !isTerribleBrowser) {
-				running = true;
-				oldType = type;
-				type = (type === 'cover') ? 'contain' : 'cover';
-				$('.background').fadeOut('', function() {
-					$(this).removeClass(oldType).addClass(type).
-						fadeIn('', function() {
-							running = false;
-						});
-				});
-				return true;
-			}
-			return false;
-		}
-	
-		function next() {
-			current = (current + 1) % imagesMax;
-			return changeImage();
-		}
-	
-		function previous() {
-			current = (current - 1 + imagesMax) % imagesMax;
-			return changeImage();
-		}
-	
-		function changeTo(number) {
-			if (number <= imagesMax && number >= 0 && number != current) {
-				current = number;
-				return changeImage();
-			}
-			return false;
-		}
-
-		function detectTerribleBrowser() {
-			if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)) {
-				isTerribleBrowser = parseFloat(RegExp.$1, 10) < 9;
-			}
-		}
-	
-		function fadeInFirstImage() {
-			$('#hiddenImg').
-				attr('src', images[current]).
-				load(function() {
-					addBackgroundImage(images[current]);
-					$('.new').fadeIn(transitionTime);
-				});	
-		}
-	
-		function addBackgroundImage(image) {
-			var n = $('.new');
-			if (isTerribleBrowser) {
-				var filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + image + "', sizingMethod='scale')";
-				n.css({
-					'filter': filter,
-					'-ms-filter': filter
-				});
-			} else {
-				n.css('background-image', "url(" + image + ")").addClass(type);
-			}
-		}
-	
-		function changeImage() {
-			if (!running) {
-				running = true;
-				$('#loading').show();
-				$('.new').addClass('old').removeClass('new');
-				$('body').append(emptyDiv);
-				$('#hiddenImg').
-					attr('src', images[current]).
-					load(function() {
-						addBackgroundImage(images[current]);
-						$('#loading').hide();
-						$('.old').fadeOut(transitionTime, function() {
-							$(this).remove()
-							running = false;
-						});
-					});
-				return true;
-			}
-			return false;
-		}
-	
-		function setKeyboardShortcuts() {
-			$(document.documentElement).keyup(function (e) {
-				if (!running) {
-					if (e.keyCode == 39 || e.keyCode == 38) next();
-					if (e.keyCode == 37 || e.keyCode == 40) previous();
-				}
-			});
-		}
+			this.setImages(images, opts.shuffle);
+			this.fadeInFirstImage();
+		};
 		
-		// makes a copy of the original array so it returns the
-		// shuffled array without changing the original	
-		// (implementation of the Fisher-Yates shuffle)
-		function randomizeArray(array) {
-			var tmp, arrayCopy = array.slice(), i = arrayCopy.length, j;
-			while (--i) {
-				j = Math.round(Math.random() * i);
-				tmp = arrayCopy[j];
-				arrayCopy[j] = arrayCopy[i];
-				arrayCopy[i] = tmp;
+		gallery.prototype = {
+			isTerribleBrowser: false,
+			emptyDiv: '<div class="background new"></div>',
+			running: false,
+			current: 0,
+			transitionTime: 1000,
+			images: new Array(),
+			imagesMax: 0,
+			type: 'cover',
+				
+			setImages: function (json, shuffle) {
+				if (shuffle) {
+					json = this.randomizeArray(json);
+				}
+				this.images = json;
+				this.imagesMax = this.images.length - 1;
+				this.current = 0;
+			},
+		
+			toggleType: function () {
+				var self = this;
+
+				if (!this.running && !this.isTerribleBrowser) {
+					this.running = true;
+					this.oldType = this.type;
+					this.type = (this.type === 'cover') ? 'contain' : 'cover';
+					$('.background').fadeOut('', function() {
+						$(this).removeClass(self.oldType).addClass(self.type).
+							fadeIn('', function() {
+								self.running = false;
+							});
+					});
+					return true;
+				}
+				return false;
+			},
+		
+			next: function () {
+				this.current = (this.current + 1) % this.imagesMax;
+				return this.changeImage();
+			},
+		
+			previous: function () {
+				this.current = (this.current - 1 + this.imagesMax) % this.imagesMax;
+				return this.changeImage();
+			},
+		
+			changeTo: function (number) {
+				if (this.number <= this.imagesMax && this.number >= 0 && this.number != this.current) {
+					this.current = this.number;
+					return this.changeImage();
+				}
+				return false;
+			},
+
+			detectTerribleBrowser: function () {
+				if (/MSIE (\d+\.\d+);/.test(window.navigator.userAgent)) {
+					this.isTerribleBrowser = parseFloat(RegExp.$1, 10) < 9;
+				}
+			},
+		
+			fadeInFirstImage: function () {
+				var self = this;
+
+				$('#hiddenImg').
+					attr('src', this.images[this.current]).
+					load(function() {
+						self.addBackgroundImage(self.images[self.current]);
+						$('.new').fadeIn(self.transitionTime);
+					});	
+			},
+		
+			addBackgroundImage: function (image) {
+				var n = $('.new');
+				if (this.isTerribleBrowser) {
+					var filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + image + "', sizingMethod='scale')";
+					n.css({
+						'filter': filter,
+						'-ms-filter': filter
+					});
+				} else {
+					n.css('background-image', "url(" + image + ")").addClass(this.type);
+				}
+			},
+		
+			changeImage: function () {
+				var self = this;
+				
+				if (!this.running) {
+					this.running = true;
+					$('#loading').show();
+					$('.new').addClass('old').removeClass('new');
+					$('body').append(this.emptyDiv);
+					$('#hiddenImg').
+						attr('src', this.images[this.current]).
+						load(function() {
+							self.addBackgroundImage(self.images[self.current]);
+							$('#loading').hide();
+							$('.old').fadeOut(self.transitionTime, function() {
+								$(this).remove();
+								self.running = false;
+							});
+						});
+					return true;
+				}
+				return false;
+			},
+		
+			setKeyboardShortcuts: function () {
+				$(window.document.documentElement).keyup(function (e) {
+					if (!this.running) {
+						if (e.keyCode == 39 || e.keyCode == 38)
+						{
+							this.next();
+						}
+						if (e.keyCode == 37 || e.keyCode == 40)
+						{
+							this.previous();
+						}
+					}
+				});
+			},
+			
+			// makes a copy of the original array so it returns the
+			// shuffled array without changing the original	
+			// (implementation of the Fisher-Yates shuffle)
+			randomizeArray: function (array) {
+				var tmp, arrayCopy = array.slice(), i = arrayCopy.length, j;
+				while (--i) {
+					j = Math.round(Math.random() * i);
+					tmp = arrayCopy[j];
+					arrayCopy[j] = arrayCopy[i];
+					arrayCopy[i] = tmp;
+				}
+				return arrayCopy;
 			}
-			return arrayCopy;
-		}
-	};
-})(jQuery);
+		};
+		
+		// export the library container to the global namespace
+		window.gallery = {
+			// export the factory method
+			newGallery: function (images, options) {
+				var newG = new gallery(images, options);
+				
+				return newG;
+			}
+		};
+	}) (jQuery, window);
+});
