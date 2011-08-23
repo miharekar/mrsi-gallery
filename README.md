@@ -27,26 +27,41 @@ Requirements
 -------
 
 * jQuery
+* $script
 
 Example usage
 -------
 ```html
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-<script src="js/gallery.js"></script>
+<script src="js/script.min.js"></script>
 <script>
-$(function() {
-	images = ["images/image1.jpg", "images/image2.jpg", "images/image3.jpg"]; //array of paths to images
-	gallery = new gallery();
-	gallery.init(images);
-	$('#toggle').click(function(){
-		gallery.toggleSize();
+(function() {
+	var images = ["images/image1.jpg", "images/image2.jpg", "images/image3.jpg"]; //array of paths to images
+	//load jQuery and gallery with $script.js - https://github.com/ded/script.js
+	$script('https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js', 'jquery');
+	$script('../gallery.js', 'gallery');
+	
+	$script.ready('gallery', function()
+	{
+		$script.domReady(function ()
+		{
+			//init the mrsi gallery and set the images with shuffle parameter set to true
+			var gallery = new window.gallery(images, true);
+			
+			//set menu controls
+			$('#toggle').click(function(){
+				gallery.toggleType();
+			});
+			$('#previous').click(function(){
+				gallery.previous();
+			});
+			$('#next').click(function(){
+				gallery.next();
+			});
+	
+			//set keyboard shortcuts
+			gallery.setKeyboardShortcuts();
+		});
 	});
-	$('#previous').click(function(){
-		gallery.previous();
-	});
-	$('#next').click(function(){
-		gallery.next();
-	});
-});
+})();
 </script>
 ```
