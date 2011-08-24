@@ -27,7 +27,6 @@ Requirements
 -------
 
 * jQuery
-* $script
 
 Example usage
 -------
