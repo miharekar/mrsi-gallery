@@ -31,31 +31,28 @@ Requirements
 Example usage
 -------
 ```html
-<script src="js/script.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+<script src="js/gallery.js"></script>
 <script>
-(function() {
+$(function() {
 	var images = ["images/image1.jpg", "images/image2.jpg", "images/image3.jpg"]; //array of paths to images
-	//load jQuery and gallery with $script.js - https://github.com/ded/script.js
-	$script('https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js', function(){
-		$script('../gallery.js', function() {
-			//init the mrsi gallery and set the images with shuffle parameter set to true
-			var myGallery = new gallery(images, true);
-			
-			//set menu controls
-			$('#toggle').click(function(){
-				myGallery.toggleType();
-			});
-			$('#previous').click(function(){
-				myGallery.previous();
-			});
-			$('#next').click(function(){
-				myGallery.next();
-			});
-
-			//set keyboard shortcuts
-			myGallery.setKeyboardShortcuts();
-		});
+	
+	//init the mrsi gallery and set the images with shuffle parameter set to true
+	var myGallery = new gallery(images, true);
+	
+	//set menu controls
+	$('#toggle').click(function(){
+		myGallery.toggleType();
 	});
-})();
+	$('#previous').click(function(){
+		myGallery.previous();
+	});
+	$('#next').click(function(){
+		myGallery.next();
+	});
+
+	//set keyboard shortcuts
+	myGallery.setKeyboardShortcuts();
+});
 </script>
 ```
