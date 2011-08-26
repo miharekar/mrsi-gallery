@@ -19,6 +19,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 <script src="../gallery.js"></script>
 <script>
+
+var myGallery;
+
 $(function() {
 	//our array of images
 	var images = [];
@@ -27,7 +30,7 @@ $(function() {
 	}
 	
 	//init the mrsi gallery and set the images with shuffle parameter set to true
-	var myGallery = new gallery(images, true);
+	myGallery = new gallery({images: images, shuffle: true});
 	
 	//set menu controls
 	$('#toggle').click(function(){

@@ -1,151 +1,166 @@
-(function($) {
+(function($, window) {
 
-	// export the constructor function to the global namespace
-	window.gallery = function(imageList, shuffle) {
+	var gallery = function (opts) {
+		var defaultOpts = {
+			images: [],
+			shuffle: false
+		};
 		
-		// private variable
-		var isTerribleBrowser = false;
-		var emptyDiv          = '<div class="background new"></div>';
-		var running           = false;
-		var current           = 0;
-		var transitionTime    = 1000;
-		var images            = [];
-		var imagesMax         = 0;
-		var type              = 'cover';
-		var backgroundDiv     = $(emptyDiv).hide().appendTo('body');
-		var hiddenImg         = $('<img id="hiddenImg"/>').appendTo('body');
-		var loadingDiv        = $('<div id="loading"></div>').appendTo('body');
+		opts = opts || defaultOpts;
 		
-		// widget API
-		this.setImages            = setImages;
-		this.toggleType           = toggleType;
-		this.next                 = next;
-		this.previous             = previous;
-		this.changeTo             = changeTo;
-		this.setKeyboardShortcuts = setKeyboardShortcuts;
+		this.detectTerribleBrowser();
+		this.setImages(opts.images, opts.shuffle);
+		this.fadeInFirstImage();
+	};
+	
+	gallery.prototype.isTerribleBrowser = false;
+	gallery.prototype.running           = false;
+	gallery.prototype.type              = 'cover';
+	
+	gallery.prototype.images            = [];
+	gallery.prototype.imagesMax         = 0;
+	gallery.prototype.current           = 0;
+	gallery.prototype.transitionTime    = 1000;
+	
+	gallery.prototype.emptyDiv          = '<div class="background new"></div>';
+	gallery.prototype.backgroundDiv     = $(gallery.prototype.emptyDiv).hide().appendTo('body');
+	gallery.prototype.hiddenImg         = $('<img id="hiddenImg"/>').appendTo('body');
+	gallery.prototype.loadingDiv        = $('<div id="loading"></div>').appendTo('body');
+	
+	gallery.prototype.setImages = function (json, shuffle) {
+		if (shuffle) {
+			json = randomizeArray(json);
+		}
 		
-		// initialize the widget
-		init(imageList, shuffle);
-		
-		function init(images, shuffle) {
-			detectTerribleBrowser();
-			setImages(images, shuffle);
-			fadeInFirstImage();
-		}
-	
-		function setImages(json, shuffle) {
-			if (shuffle) {
-				json = randomizeArray(json);
-			}
-			images = json;
-			imagesMax = images.length - 1;
-			current = 0;
-		}
-	
-		function toggleType() {
-			if (!running && !isTerribleBrowser) {
-				var oldType = type;
-				running = true;
-				type = (type === 'cover') ? 'contain' : 'cover';
-				backgroundDiv.fadeOut('', function() {
-					$(this).removeClass(oldType).addClass(type).
-						fadeIn('', function() {
-							running = false;
-						});
-				});
-				return true;
-			}
-			return false;
-		}
-	
-		function next() {
-			current = (current + 1) % imagesMax;
-			return changeImage();
-		}
-	
-		function previous() {
-			current = (current - 1 + imagesMax) % imagesMax;
-			return changeImage();
-		}
-	
-		function changeTo(number) {
-			if (number <= imagesMax && number >= 0 && number != current) {
-				current = number;
-				return changeImage();
-			}
-			return false;
-		}
+		this.images = json;
+		this.imagesMax = this.images.length - 1;
+		this.current = 0;
+	};
 
-		function detectTerribleBrowser() {
-			if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)) {
-				isTerribleBrowser = parseFloat(RegExp.$1, 10) < 9;
-			}
-		}
-	
-		function fadeInFirstImage() {
-			hiddenImg.
-				attr('src', images[current]).
-				load(function() {
-					addBackgroundImage(images[current], backgroundDiv);
-					backgroundDiv.fadeIn(transitionTime);
-				});	
-		}
-	
-		function addBackgroundImage(image, el) {
-			if (isTerribleBrowser) {
-				var filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + image + "', sizingMethod='scale')";
-				el.css({
-					'filter': filter,
-					'-ms-filter': filter
-				});
-			} else {
-				el.css('background-image', 'url(' + image + ')').addClass(type);
-			}
-		}
-	
-		function changeImage() {
-			if (!running) {
-				var oldDiv = backgroundDiv;
-				backgroundDiv = $(emptyDiv).insertBefore(oldDiv);
-				running = true;
-				loadingDiv.show();
-				oldDiv.addClass('old').removeClass('new');
-				hiddenImg.
-					attr('src', images[current]).
-					load(function() {
-						addBackgroundImage(images[current], backgroundDiv);
-						loadingDiv.hide();
-						oldDiv.fadeOut(transitionTime, function() {
-							$(this).remove();
-							running = false;
-						});
+	gallery.prototype.toggleType = function () {
+		var self = this;
+		
+		if (!this.running && !this.isTerribleBrowser) {
+			var oldType = this.type;
+			this.running = true;
+			this.type = (this.type === 'cover') ? 'contain' : 'cover';
+			this.backgroundDiv.fadeOut('', function() {
+				$(this).removeClass(oldType).addClass(self.type).
+					fadeIn('', function() {
+						self.running = false;
 					});
-				return true;
-			}
-			return false;
-		}
-	
-		function setKeyboardShortcuts() {
-			$(document.documentElement).keyup(function (e) {
-				if (!running) {
-					if (e.keyCode == 39 || e.keyCode == 38) next();
-					if (e.keyCode == 37 || e.keyCode == 40) previous();
-				}
 			});
+			
+			return true;
 		}
 		
-		// makes a copy of the original array so it returns the
-		// shuffled array without changing the original	
-		// (implementation of the Fisher-Yates shuffle)
-		function randomizeArray(array) {
-			var tmp, arrayCopy = array.slice(), i = arrayCopy.length, j;
-			while (--i) {
-				j = Math.round(Math.random() * i);
-				tmp = arrayCopy[j];
-				arrayCopy[j] = arrayCopy[i];
-				arrayCopy[i] = tmp;
-			}
-			return arrayCopy;
+		return false;
+	};
+
+	gallery.prototype.next = function () {
+		this.current = (this.current + 1) % this.imagesMax;
+		return this.changeImage();
+	};
+
+	gallery.prototype.previous = function () {
+		this.current = (this.current - 1 + this.imagesMax) % this.imagesMax;
+		return this.changeImage();
+	};
+
+	gallery.prototype.changeTo = function (number) {
+		if (number <= this.imagesMax && number >= 0 && number != this.current) {
+			this.current = number;
+			return this.changeImage();
+		}
+		
+		return false;
+	};
+
+	gallery.prototype.detectTerribleBrowser = function () {
+		if (/MSIE (\d+\.\d+);/.test(window.navigator.userAgent)) {
+			this.isTerribleBrowser = parseFloat(RegExp.$1, 10) < 9;
 		}
 	};
-})(jQuery);
+
+	gallery.prototype.fadeInFirstImage = function () {
+		var self = this;
+		
+		this.hiddenImg.
+			attr('src', this.images[this.current]).
+			load(function() {
+				self.addBackgroundImage(self.images[self.current]);
+				self.backgroundDiv.fadeIn(self.transitionTime);
+			});	
+	};
+
+	gallery.prototype.addBackgroundImage = function (image) {
+		var el = this.backgroundDiv;
+		
+		if (this.isTerribleBrowser) {
+			var filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + this.image + "', sizingMethod='scale')";
+			el.css({
+				'filter': filter,
+				'-ms-filter': filter
+			});
+		} else {
+			el.css('background-image', 'url(' + image + ')').addClass(this.type);
+		}
+	};
+
+	gallery.prototype.changeImage = function () {
+		var self = this;
+
+		if (!this.running) {
+			var oldDiv = this.backgroundDiv;
+			this.backgroundDiv = $(this.emptyDiv).insertBefore(oldDiv);
+			this.running = true;
+			this.loadingDiv.show();
+			oldDiv.addClass('old').removeClass('new');
+			this.hiddenImg.
+				attr('src', self.images[self.current]).
+				load(function() {
+					self.addBackgroundImage(self.images[self.current]);
+					self.loadingDiv.hide();
+					oldDiv.fadeOut(self.transitionTime, function() {
+						$(this).remove();
+						self.running = false;
+					});
+				});
+			return true;
+		}
+		return false;
+	};
+
+	gallery.prototype.setKeyboardShortcuts = function () {
+		var self = this;
+		
+		$(window.document.documentElement).keyup(function (e) {
+			if (!this.running) {
+				if (e.keyCode == 39 || e.keyCode == 38) self.next();
+				if (e.keyCode == 37 || e.keyCode == 40) self.previous();
+			}
+		});
+	};
+	
+	gallery.prototype.setTransitionTime = function (time) {
+		this.transitionTime = parseInt(time, 10);
+	};
+	
+	// makes a copy of the original array so it returns the
+	// shuffled array without changing the original	
+	// (implementation of the Fisher-Yates shuffle)
+	var randomizeArray = function (arr) {
+		var tmp, arrayCopy = arr.slice(), i = arrayCopy.length, j;
+		
+		while (--i) {
+			j = Math.round(Math.random() * i);
+			tmp = arrayCopy[j];
+			arrayCopy[j] = arrayCopy[i];
+			arrayCopy[i] = tmp;
+		}
+		return arrayCopy;
+	};
+	
+	// export the constructor function to the global namespace
+	window.gallery = gallery;
+})(jQuery, window);
