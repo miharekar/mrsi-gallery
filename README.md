@@ -38,7 +38,7 @@ $(function() {
 	var images = ["images/image1.jpg", "images/image2.jpg", "images/image3.jpg"]; //array of paths to images
 	
 	//init the mrsi gallery and set the images with shuffle parameter set to true
-	var myGallery = new gallery(images, true);
+	var myGallery = new gallery({images: images, shuffle: true});
 	
 	//set menu controls
 	$('#toggle').click(function(){
