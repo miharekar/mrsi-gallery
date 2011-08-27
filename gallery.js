@@ -10,6 +10,31 @@
 		
 		this.detectTerribleBrowser();
 		this.setImages(opts.images, opts.shuffle);
+		
+		var self = this;
+		
+		this.hiddenImg.load(function() {
+			if (!self.running) {
+				return;
+			}
+			
+			self.addBackgroundImage(self.images[self.current]);
+			self.loadingDiv.hide();
+			
+			if (self.oldDiv !== null) {
+				self.oldDiv.fadeOut(self.transitionTime, function() {
+					$(this).remove();
+					self.running = false;
+				});
+			}
+			else {
+				self.backgroundDiv.fadeIn(self.transitionTime, function () {
+					self.running = false;
+				});
+			}
+		});
+		
+		this.running = true;
 		this.fadeInFirstImage();
 	};
 	
@@ -24,6 +49,7 @@
 	
 	gallery.prototype.emptyDiv          = '<div class="background new"></div>';
 	gallery.prototype.backgroundDiv     = $(gallery.prototype.emptyDiv).hide().appendTo('body');
+	gallery.prototype.oldDiv			= null;
 	gallery.prototype.hiddenImg         = $('<img id="hiddenImg"/>').appendTo('body');
 	gallery.prototype.loadingDiv        = $('<div id="loading"></div>').appendTo('body');
 	
@@ -58,12 +84,20 @@
 	};
 
 	gallery.prototype.next = function () {
+		if (this.running) {
+			return;
+		}
+		
 		this.current = (this.current + 1) % this.imagesMax;
 		return this.changeImage();
 	};
 
 	gallery.prototype.previous = function () {
-		this.current = (this.current - 1 + this.imagesMax) % this.imagesMax;
+		if (this.running) {
+			return;
+		}
+		
+		this.current = (this.current - 1) % this.imagesMax;
 		return this.changeImage();
 	};
 
@@ -83,14 +117,7 @@
 	};
 
 	gallery.prototype.fadeInFirstImage = function () {
-		var self = this;
-		
-		this.hiddenImg.
-			attr('src', this.images[this.current]).
-			load(function() {
-				self.addBackgroundImage(self.images[self.current]);
-				self.backgroundDiv.fadeIn(self.transitionTime);
-			});	
+		this.hiddenImg.attr('src', this.images[this.current]);	
 	};
 
 	gallery.prototype.addBackgroundImage = function (image) {
@@ -111,23 +138,16 @@
 		var self = this;
 
 		if (!this.running) {
-			var oldDiv = this.backgroundDiv;
-			this.backgroundDiv = $(this.emptyDiv).insertBefore(oldDiv);
+			this.oldDiv = this.backgroundDiv;
+			this.backgroundDiv = $(this.emptyDiv).insertBefore(this.oldDiv);
 			this.running = true;
 			this.loadingDiv.show();
-			oldDiv.addClass('old').removeClass('new');
-			this.hiddenImg.
-				attr('src', self.images[self.current]).
-				load(function() {
-					self.addBackgroundImage(self.images[self.current]);
-					self.loadingDiv.hide();
-					oldDiv.fadeOut(self.transitionTime, function() {
-						$(this).remove();
-						self.running = false;
-					});
-				});
+			this.oldDiv.addClass('old').removeClass('new');
+			this.hiddenImg.attr('src', self.images[self.current]);
+
 			return true;
 		}
+		
 		return false;
 	};
 
