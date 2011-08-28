@@ -3,13 +3,22 @@
 	var gallery = function (opts) {
 		var defaultOpts = {
 			images: [],
-			shuffle: false
+			shuffle: false,
+			transitionTime: 1000,
+			type: 'cover',
+			keyboardShortcuts: true
 		};
 		
-		opts = opts || defaultOpts;
+		var opts = $.extend({}, defaultOpts, opts);
 		
-		this.detectTerribleBrowser();
 		this.setImages(opts.images, opts.shuffle);
+		this.detectTerribleBrowser();
+		this.setTransitionTime(opts.transitionTime);
+		this.type = opts.type;
+		
+		if (opts.keyboardShortcuts) {
+			this.setKeyboardShortcuts();
+		}
 		
 		var self = this;
 		
@@ -35,17 +44,15 @@
 		});
 		
 		this.running = true;
-		this.fadeInFirstImage();
+		this.hiddenImg.attr('src', this.images[this.current]);
 	};
 	
 	gallery.prototype.isTerribleBrowser = false;
 	gallery.prototype.running           = false;
-	gallery.prototype.type              = 'cover';
 	
 	gallery.prototype.images            = [];
 	gallery.prototype.imagesMax         = 0;
 	gallery.prototype.current           = 0;
-	gallery.prototype.transitionTime    = 1000;
 	
 	gallery.prototype.emptyDiv          = '<div class="background new"></div>';
 	gallery.prototype.backgroundDiv     = $(gallery.prototype.emptyDiv).hide().appendTo('body');
@@ -53,6 +60,7 @@
 	gallery.prototype.hiddenImg         = $('<img id="hiddenImg"/>').appendTo('body');
 	gallery.prototype.loadingDiv        = $('<div id="loading"></div>').appendTo('body');
 	
+	//sets images array, optionally shuffles
 	gallery.prototype.setImages = function (json, shuffle) {
 		if (shuffle) {
 			json = randomizeArray(json);
@@ -62,7 +70,18 @@
 		this.imagesMax = this.images.length - 1;
 		this.current = 0;
 	};
+	
+	//sets new images array - usefull when having multiple galleries
+	gallery.prototype.setNewImages = function (json, shuffle) {
+		var oldImage = this.images[this.current];
+		this.setImages(json, shuffle);
+		if (oldImage !== this.images[this.current])
+		{
+			this.changeImage();
+		}
+	}
 
+	//toggles between cover and contain CSS background type parameter
 	gallery.prototype.toggleType = function () {
 		var self = this;
 		
@@ -80,51 +99,52 @@
 			return true;
 		}
 		
-		return false;
+		return;
 	};
 
+	//changes to next image in images array
 	gallery.prototype.next = function () {
 		if (this.running) {
 			return;
 		}
 		
-		this.current = (this.current + 1) % this.imagesMax;
+		this.current = (this.current === this.imagesMax) ? 0 : this.current + 1;
 		return this.changeImage();
 	};
 
+	//changes to previous image in images array
 	gallery.prototype.previous = function () {
 		if (this.running) {
 			return;
 		}
 		
-		this.current = (this.current - 1) % this.imagesMax;
+		this.current = (this.current === 0) ? this.imagesMax : this.current - 1;
 		return this.changeImage();
 	};
 
+	//changes to image on number position in images array
 	gallery.prototype.changeTo = function (number) {
-		if (number <= this.imagesMax && number >= 0 && number != this.current) {
+		if (number <= this.imagesMax && number >= 0 && number !== this.current) {
 			this.current = number;
 			return this.changeImage();
 		}
 		
-		return false;
+		return;
 	};
 
+	//detects IE < 9 so it uses filter CSS attribute
 	gallery.prototype.detectTerribleBrowser = function () {
 		if (/MSIE (\d+\.\d+);/.test(window.navigator.userAgent)) {
 			this.isTerribleBrowser = parseFloat(RegExp.$1, 10) < 9;
 		}
 	};
 
-	gallery.prototype.fadeInFirstImage = function () {
-		this.hiddenImg.attr('src', this.images[this.current]);	
-	};
-
+	//adds background image to div
 	gallery.prototype.addBackgroundImage = function (image) {
 		var el = this.backgroundDiv;
 		
 		if (this.isTerribleBrowser) {
-			var filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + this.image + "', sizingMethod='scale')";
+			var filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + image + "', sizingMethod='scale')";
 			el.css({
 				'filter': filter,
 				'-ms-filter': filter
@@ -134,6 +154,7 @@
 		}
 	};
 
+	//replaces old image with new one
 	gallery.prototype.changeImage = function () {
 		var self = this;
 
@@ -148,20 +169,22 @@
 			return true;
 		}
 		
-		return false;
+		return;
 	};
 
+	//set keyboard shortcuts on arrow keys
 	gallery.prototype.setKeyboardShortcuts = function () {
 		var self = this;
 		
 		$(window.document.documentElement).keyup(function (e) {
 			if (!this.running) {
-				if (e.keyCode == 39 || e.keyCode == 38) self.next();
-				if (e.keyCode == 37 || e.keyCode == 40) self.previous();
+				if (e.keyCode === 39 || e.keyCode === 38) self.next();
+				if (e.keyCode === 37 || e.keyCode === 40) self.previous();
 			}
 		});
 	};
 	
+	//sets transitonTime
 	gallery.prototype.setTransitionTime = function (time) {
 		this.transitionTime = parseInt(time, 10);
 	};
