@@ -28,13 +28,12 @@ $(function() {
 	}
 	
 	//init the mrsi gallery
-	//all parameters are optional, but you should at least define the images if you want something to show :P
-	//images: the array of images to display
-	//shuffle: boolean - depending on if you want to display images in random order or not
-	//transitionTime: integer - sets for how long the transition between images last on image change
-	//type: string - either 'cover' or 'contain' - gallery.toggleType toggles between them
-	//keyboardShortcuts: boolean - if you want arrow keys to change images set to true
-	var myGallery = new gallery({images: images, shuffle: true, transitionTime: 500, type: 'cover', keyboardShortcuts: true});
+	var options = {
+		images: images,
+		shuffle: true,
+		keyboardShortcuts: true
+	};
+	var myGallery = new gallery(options);
 	
 	//set menu controls
 	$('#previous').click(function(){
