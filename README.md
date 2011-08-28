@@ -32,7 +32,7 @@ Example usage
 -------
 ```html
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-<script src="js/gallery.js"></script>
+<script src="js/gallery.min.js"></script>
 <script>
 $(function() {
 	//init the mrsi gallery
