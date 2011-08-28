@@ -6,7 +6,7 @@
 			shuffle: false,
 			transitionTime: 1000,
 			type: 'cover',
-			keyboardShortcuts: true
+			keyboardShortcuts: false
 		};
 		
 		var opts = $.extend({}, defaultOpts, opts);
@@ -46,13 +46,6 @@
 		this.running = true;
 		this.hiddenImg.attr('src', this.images[this.current]);
 	};
-	
-	gallery.prototype.isTerribleBrowser = false;
-	gallery.prototype.running           = false;
-	
-	gallery.prototype.images            = [];
-	gallery.prototype.imagesMax         = 0;
-	gallery.prototype.current           = 0;
 	
 	gallery.prototype.emptyDiv          = '<div class="background new"></div>';
 	gallery.prototype.backgroundDiv     = $(gallery.prototype.emptyDiv).hide().appendTo('body');
