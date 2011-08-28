@@ -72,9 +72,16 @@
 	};
 	
 	//sets new images array - usefull when having multiple galleries
-	gallery.prototype.setNewImages = function (json, shuffle) {
+	gallery.prototype.setNewImages = function (opts) {
+		var defaultOpts = {
+			images: [],
+			shuffle: false
+		};
+		
+		var opts = $.extend({}, defaultOpts, opts);
+
 		var oldImage = this.images[this.current];
-		this.setImages(json, shuffle);
+		this.setImages(opts.images, opts.shuffle);
 		if (oldImage !== this.images[this.current])
 		{
 			this.changeImage();
