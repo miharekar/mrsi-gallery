@@ -1,5 +1,5 @@
-(function($, window) {
-
+(function ($, window) {
+	'use strict';
 	var gallery = function (opts) {
 		var defaultOpts = {
 			images: [],
@@ -9,7 +9,7 @@
 			keyboardShortcuts: false
 		};
 		
-		var opts = $.extend({}, defaultOpts, opts);
+		opts = $.extend({}, defaultOpts, opts);
 		
 		this.setImages(opts.images, opts.shuffle);
 		this.detectTerribleBrowser();
@@ -22,7 +22,7 @@
 		
 		var self = this;
 		
-		this.hiddenImg.load(function() {
+		this.hiddenImg.load(function () {
 			if (!self.running) {
 				return;
 			}
@@ -31,12 +31,11 @@
 			self.loadingDiv.hide();
 			
 			if (self.oldDiv !== null) {
-				self.oldDiv.fadeOut(self.transitionTime, function() {
+				self.oldDiv.fadeOut(self.transitionTime, function () {
 					$(this).remove();
 					self.running = false;
 				});
-			}
-			else {
+			} else {
 				self.backgroundDiv.fadeIn(self.transitionTime, function () {
 					self.running = false;
 				});
@@ -52,6 +51,27 @@
 	gallery.prototype.oldDiv			= null;
 	gallery.prototype.hiddenImg         = $('<img id="hiddenImg"/>').appendTo('body');
 	gallery.prototype.loadingDiv        = $('<div id="loading"></div>').appendTo('body');
+	
+	//sets transitonTime
+	gallery.prototype.setTransitionTime = function (time) {
+		this.transitionTime = parseInt(time, 10);
+	};
+	
+	// makes a copy of the original array so it returns the
+	// shuffled array without changing the original	
+	// (implementation of the Fisher-Yates shuffle)
+	var randomizeArray = function (arr) {
+		var tmp, arrayCopy = arr.slice(), i = arrayCopy.length, j;
+		
+		while (i) {
+			i = i - 1;
+			j = Math.round(Math.random() * i);
+			tmp = arrayCopy[j];
+			arrayCopy[j] = arrayCopy[i];
+			arrayCopy[i] = tmp;
+		}
+		return arrayCopy;
+	};
 	
 	//sets images array, optionally shuffles
 	gallery.prototype.setImages = function (json, shuffle) {
@@ -71,15 +91,14 @@
 			shuffle: false
 		};
 		
-		var opts = $.extend({}, defaultOpts, opts);
+		opts = $.extend({}, defaultOpts, opts);
 
 		var oldImage = this.images[this.current];
 		this.setImages(opts.images, opts.shuffle);
-		if (oldImage !== this.images[this.current])
-		{
+		if (oldImage !== this.images[this.current]) {
 			this.changeImage();
 		}
-	}
+	};
 
 	//toggles between cover and contain CSS background type parameter
 	gallery.prototype.toggleType = function () {
@@ -89,9 +108,9 @@
 			var oldType = this.type;
 			this.running = true;
 			this.type = (this.type === 'cover') ? 'contain' : 'cover';
-			this.backgroundDiv.fadeOut('', function() {
+			this.backgroundDiv.fadeOut('', function () {
 				$(this).removeClass(oldType).addClass(self.type).
-					fadeIn('', function() {
+					fadeIn('', function () {
 						self.running = false;
 					});
 			});
@@ -178,32 +197,17 @@
 		
 		$(window.document.documentElement).keyup(function (e) {
 			if (!this.running) {
-				if (e.keyCode === 39 || e.keyCode === 38) self.next();
-				if (e.keyCode === 37 || e.keyCode === 40) self.previous();
+				if (e.keyCode === 39 || e.keyCode === 38) {
+					self.next();
+				}
+				
+				if (e.keyCode === 37 || e.keyCode === 40) {
+					self.previous();
+				}
 			}
 		});
 	};
 	
-	//sets transitonTime
-	gallery.prototype.setTransitionTime = function (time) {
-		this.transitionTime = parseInt(time, 10);
-	};
-	
-	// makes a copy of the original array so it returns the
-	// shuffled array without changing the original	
-	// (implementation of the Fisher-Yates shuffle)
-	var randomizeArray = function (arr) {
-		var tmp, arrayCopy = arr.slice(), i = arrayCopy.length, j;
-		
-		while (--i) {
-			j = Math.round(Math.random() * i);
-			tmp = arrayCopy[j];
-			arrayCopy[j] = arrayCopy[i];
-			arrayCopy[i] = tmp;
-		}
-		return arrayCopy;
-	};
-	
 	// export the constructor function to the global namespace
 	window.gallery = gallery;
-})(jQuery, window);
+}(jQuery, window));
