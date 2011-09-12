@@ -21,7 +21,6 @@
 <script src="js/modernizr.js"></script>
 <script src="../gallery.min.js"></script>
 <script>
-var myGallery = {};
 $(function() {
 	//our array of images
 	var images = [];
@@ -36,7 +35,7 @@ $(function() {
 		cssTransitions: true,
 		keyboardShortcuts: true	
 	};
-	myGallery = new gallery(options);
+	var myGallery = new gallery(options);
 	
 	//set menu controls
 	$('#previous').click(function(){
