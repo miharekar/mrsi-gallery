@@ -32,10 +32,17 @@
 			self.loadingDiv.hide();
 			
 			if (self.oldDiv !== null) {
-				self.oldDiv.addClass('fadeout').bind(self.transitionType, function () {
-					self.oldDiv.remove();
-					self.running = false;
-				});
+				if (self.transitionType) {
+					self.oldDiv.addClass('fadeout').bind(self.transitionType, function () {
+						self.oldDiv.remove();
+						self.running = false;
+					});
+				} else {
+					self.oldDiv.fadeOut(self.transitionTime, function () {
+						self.oldDiv.remove();
+						self.running = false;
+					});
+				}
 			} else {
 				
 				self.backgroundDiv.fadeIn(self.transitionTime, function () {
@@ -172,7 +179,7 @@
 		    'transition'       : 'transitionEnd'
 		};
 			
-		this.transitionType = Modernizr.csstransitions ? transEndEventNames[ Modernizr.prefixed('transition') ] : false;
+		this.transitionType = Modernizr.csstransitions ? transEndEventNames[Modernizr.prefixed('transition')] : false;
 	};
 
 	//adds background image to div
