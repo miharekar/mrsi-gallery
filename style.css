@@ -21,6 +21,11 @@ body {
 	left: 0;
 	top: 0;
 	z-index: 5;
+	opacity: 1;
+}
+
+.fadeout {
+	opacity: 0;
 }
 
 .contain {

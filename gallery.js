@@ -1,4 +1,4 @@
-(function ($, window) {
+(function ($, Modernizr, window) {
 	'use strict';
 	var gallery = function (opts) {
 		var defaultOpts = {
@@ -6,6 +6,7 @@
 			shuffle: false,
 			transitionTime: 1000,
 			type: 'cover',
+			cssTransitions: false,
 			keyboardShortcuts: false
 		};
 		
@@ -13,14 +14,25 @@
 		
 		this.setImages(opts.images, opts.shuffle);
 		this.detectTerribleBrowser();
+		this.detectTransitionType();		
 		this.setTransitionTime(opts.transitionTime);
 		this.type = opts.type;
+		this.enableCSSTransitions(opts.cssTransitions);
 		
 		if (opts.keyboardShortcuts) {
 			this.setKeyboardShortcuts();
 		}
 		
 		var self = this;
+		
+		var removeOldImage = function () {
+			self.oldDiv.remove();
+			self.running = false;
+		};
+		
+		var stopRunning = function () {
+			self.running = false;
+		};
 		
 		this.hiddenImg.load(function () {
 			if (!self.running) {
@@ -31,14 +43,17 @@
 			self.loadingDiv.hide();
 			
 			if (self.oldDiv !== null) {
-				self.oldDiv.fadeOut(self.transitionTime, function () {
-					$(this).remove();
-					self.running = false;
-				});
+				if (self.transitionType) {
+					self.oldDiv.css(self.transitionClass).addClass('fadeout').bind(self.transitionType, removeOldImage);
+				} else {
+					self.oldDiv.fadeOut(self.transitionTime, removeOldImage);
+				}
 			} else {
-				self.backgroundDiv.fadeIn(self.transitionTime, function () {
-					self.running = false;
-				});
+				if (self.transitionType) {
+					self.backgroundDiv.css(self.transitionClass).removeClass('fadeout').bind(self.transitionType, stopRunning);
+				} else {
+					self.backgroundDiv.fadeIn(self.transitionTime, stopRunning);
+				}				
 			}
 		});
 		
@@ -47,7 +62,6 @@
 	};
 	
 	gallery.prototype.emptyDiv          = '<div class="background new"></div>';
-	gallery.prototype.backgroundDiv     = $(gallery.prototype.emptyDiv).hide().appendTo('body');
 	gallery.prototype.oldDiv			= null;
 	gallery.prototype.hiddenImg         = $('<img id="hiddenImg"/>').appendTo('body');
 	gallery.prototype.loadingDiv        = $('<div id="loading"></div>').appendTo('body');
@@ -55,6 +69,12 @@
 	//sets transitonTime
 	gallery.prototype.setTransitionTime = function (time) {
 		this.transitionTime = parseInt(time, 10);
+		time = time + 'ms';
+		this.transitionClass = {'transition': time, '-moz-transition': time, '-webkit-transition': time, '-o-transition': time};
+	};
+	
+	gallery.prototype.enableCSSTransitions = function (enable) {
+		this.transitionType = enable ? this.detectTransitionType() : false;
 	};
 	
 	// makes a copy of the original array so it returns the
@@ -103,21 +123,27 @@
 	//toggles between cover and contain CSS background type parameter
 	gallery.prototype.toggleType = function () {
 		var self = this;
-		
 		if (!this.running && !this.isTerribleBrowser) {
 			var oldType = this.type;
 			this.running = true;
 			this.type = (this.type === 'cover') ? 'contain' : 'cover';
-			this.backgroundDiv.fadeOut('', function () {
-				$(this).removeClass(oldType).addClass(self.type).
-					fadeIn('', function () {
+			
+			if (self.transitionType) {
+				this.backgroundDiv.css(self.transitionClass).addClass('fadeout').bind(this.transitionType, function () {
+					$(this).removeClass(oldType).addClass(self.type).removeClass('fadeout').unbind(self.transitionType).bind(self.transitionType, function () {
+						self.running = false;
+						$(this).unbind(self.transitionType);
+					});
+				});
+			} else {
+				this.backgroundDiv.fadeOut('', function () {
+					$(this).removeClass(oldType).addClass(self.type).fadeIn('', function () {
 						self.running = false;
 					});
-			});
-			
+				});
+			}
 			return true;
 		}
-		
 		return;
 	};
 
@@ -157,9 +183,28 @@
 			this.isTerribleBrowser = parseFloat(RegExp.$1, 10) < 9;
 		}
 	};
+	
+	gallery.prototype.detectTransitionType = function () {
+		var transEndEventNames = {
+		    'WebkitTransition' : 'webkitTransitionEnd',
+		    'MozTransition'    : 'transitionend',
+		    'OTransition'      : 'oTransitionEnd',
+		    'transition'       : 'transitionEnd'
+		};
+			
+		return Modernizr.csstransitions ? transEndEventNames[Modernizr.prefixed('transition')] : false;
+	};
 
 	//adds background image to div
 	gallery.prototype.addBackgroundImage = function (image) {
+		if (this.backgroundDiv === undefined) {
+			if (this.transitionType) {
+				this.backgroundDiv = $(gallery.prototype.emptyDiv).addClass('fadeout').appendTo('body');
+			} else {
+				this.backgroundDiv = $(gallery.prototype.emptyDiv).hide().appendTo('body');
+			}			
+		}
+
 		var el = this.backgroundDiv;
 		
 		if (this.isTerribleBrowser) {
@@ -184,10 +229,8 @@
 			this.loadingDiv.show();
 			this.oldDiv.addClass('old').removeClass('new');
 			this.hiddenImg.attr('src', self.images[self.current]);
-
 			return true;
 		}
-		
 		return;
 	};
 
@@ -210,4 +253,4 @@
 	
 	// export the constructor function to the global namespace
 	window.gallery = gallery;
-}(jQuery, window));
+}(jQuery, Modernizr, window));
