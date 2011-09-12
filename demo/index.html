@@ -12,6 +12,7 @@
 	<li id="previous">Previous</li>
 	<li id="toggle">Toggle size</li>
 	<li>Transition time:<input id="transitionTime" type="text" value="1000"></li>
+	<li>Enable CSS transitions:<input id="cssEnabled" type="checkbox" value=1 checked="checked"></li>
 </ul>
 <div id="content">
 <p>Just a simple demo of <a href="https://github.com/mrfoto/mrsi-gallery/">mrsi gallery</a>. Have a look at source for more info.</p>
@@ -20,6 +21,7 @@
 <script src="js/modernizr.js"></script>
 <script src="../gallery.js"></script>
 <script>
+var myGallery = {};
 $(function() {
 	//our array of images
 	var images = [];
@@ -31,9 +33,10 @@ $(function() {
 	var options = {
 		images: images,
 		shuffle: true,
-		keyboardShortcuts: true
+		keyboardShortcuts: true,
+		cssTransitions: true	
 	};
-	var myGallery = new gallery(options);
+	myGallery = new gallery(options);
 	
 	//set menu controls
 	$('#previous').click(function(){
@@ -57,6 +60,10 @@ $(function() {
 		var time = parseInt($(this).val());
 		$(this).val(time);
 		myGallery.setTransitionTime(time);
+	});
+	
+	$('#cssEnabled').change(function(){
+		myGallery.enableCSSTransitions($(this).prop('checked'));
 	});
 });
 </script>

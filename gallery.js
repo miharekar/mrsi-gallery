@@ -6,6 +6,7 @@
 			shuffle: false,
 			transitionTime: 1000,
 			type: 'cover',
+			cssTransitions: true,
 			keyboardShortcuts: false
 		};
 		
@@ -16,6 +17,7 @@
 		this.detectTransitionType();		
 		this.setTransitionTime(opts.transitionTime);
 		this.type = opts.type;
+		this.enableCSSTransitions(opts.cssTransitions);
 		
 		if (opts.keyboardShortcuts) {
 			this.setKeyboardShortcuts();
@@ -71,6 +73,10 @@
 		this.transitionClass = {'transition': time, '-moz-transition': time, '-webkit-transition': time, '-o-transition': time};
 	};
 	
+	gallery.prototype.enableCSSTransitions = function (enable) {
+		this.transitionType = enable ? this.detectTransitionType() : false;
+	};
+	
 	// makes a copy of the original array so it returns the
 	// shuffled array without changing the original	
 	// (implementation of the Fisher-Yates shuffle)
@@ -117,16 +123,16 @@
 	//toggles between cover and contain CSS background type parameter
 	gallery.prototype.toggleType = function () {
 		var self = this;
-		
 		if (!this.running && !this.isTerribleBrowser) {
 			var oldType = this.type;
 			this.running = true;
 			this.type = (this.type === 'cover') ? 'contain' : 'cover';
 			
 			if (self.transitionType) {
-				this.backgroundDiv.addClass('fadeout').bind(this.transitionType, function () {
-					$(this).removeClass(oldType).addClass(self.type).removeClass('fadeout').bind(self.transitionType, function () {
+				this.backgroundDiv.css(self.transitionClass).addClass('fadeout').bind(this.transitionType, function () {
+					$(this).removeClass(oldType).addClass(self.type).removeClass('fadeout').unbind(self.transitionType).bind(self.transitionType, function () {
 						self.running = false;
+						$(this).unbind(self.transitionType);
 					});
 				});
 			} else {
@@ -186,7 +192,7 @@
 		    'transition'       : 'transitionEnd'
 		};
 			
-		this.transitionType = Modernizr.csstransitions ? transEndEventNames[Modernizr.prefixed('transition')] : false;
+		return Modernizr.csstransitions ? transEndEventNames[Modernizr.prefixed('transition')] : false;
 	};
 
 	//adds background image to div
