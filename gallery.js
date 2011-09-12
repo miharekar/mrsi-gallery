@@ -31,14 +31,18 @@
 			self.loadingDiv.hide();
 			
 			if (self.oldDiv !== null) {
-				self.oldDiv.fadeOut(self.transitionTime, function () {
-					$(this).remove();
+				self.oldDiv.addClass('fadeout').bind('webkitTransitionEnd', function () {
+					self.oldDiv.remove();
 					self.running = false;
 				});
 			} else {
+				
 				self.backgroundDiv.fadeIn(self.transitionTime, function () {
 					self.running = false;
 				});
+				
+				//console.log(self.backgroundDiv);
+				//self.backgroundDiv.removeClass('transition').addClass('fadeout').addClass('transition').removeClass('fadeout');
 			}
 		});
 		
@@ -46,7 +50,7 @@
 		this.hiddenImg.attr('src', this.images[this.current]);
 	};
 	
-	gallery.prototype.emptyDiv          = '<div class="background new"></div>';
+	gallery.prototype.emptyDiv          = '<div class="background new transition"></div>';
 	gallery.prototype.backgroundDiv     = $(gallery.prototype.emptyDiv).hide().appendTo('body');
 	gallery.prototype.oldDiv			= null;
 	gallery.prototype.hiddenImg         = $('<img id="hiddenImg"/>').appendTo('body');
