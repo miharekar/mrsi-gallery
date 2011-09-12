@@ -21,6 +21,11 @@
 			this.setKeyboardShortcuts();
 		}
 		
+		var removeOldImage = function () {
+			self.oldDiv.remove();
+			self.running = false;
+		};
+		
 		var self = this;
 		
 		this.hiddenImg.load(function () {
@@ -33,15 +38,9 @@
 			
 			if (self.oldDiv !== null) {
 				if (self.transitionType) {
-					self.oldDiv.addClass('fadeout').bind(self.transitionType, function () {
-						self.oldDiv.remove();
-						self.running = false;
-					});
+					self.oldDiv.css(self.transitionClass).addClass('fadeout').bind(self.transitionType, removeOldImage);
 				} else {
-					self.oldDiv.fadeOut(self.transitionTime, function () {
-						self.oldDiv.remove();
-						self.running = false;
-					});
+					self.oldDiv.fadeOut(self.transitionTime, removeOldImage);
 				}
 			} else {
 				
@@ -58,7 +57,7 @@
 		this.hiddenImg.attr('src', this.images[this.current]);
 	};
 	
-	gallery.prototype.emptyDiv          = '<div class="background new transition"></div>';
+	gallery.prototype.emptyDiv          = '<div class="background new"></div>';
 	gallery.prototype.backgroundDiv     = $(gallery.prototype.emptyDiv).hide().appendTo('body');
 	gallery.prototype.oldDiv			= null;
 	gallery.prototype.hiddenImg         = $('<img id="hiddenImg"/>').appendTo('body');
@@ -67,6 +66,8 @@
 	//sets transitonTime
 	gallery.prototype.setTransitionTime = function (time) {
 		this.transitionTime = parseInt(time, 10);
+		time = time + 'ms';
+		this.transitionClass = {'transition': time, '-moz-transition': time, '-webkit-transition': time, '-o-transition': time};
 	};
 	
 	// makes a copy of the original array so it returns the
@@ -175,7 +176,6 @@
 		    'WebkitTransition' : 'webkitTransitionEnd',
 		    'MozTransition'    : 'transitionend',
 		    'OTransition'      : 'oTransitionEnd',
-		    'msTransition'     : 'msTransitionEnd', // maybe?
 		    'transition'       : 'transitionEnd'
 		};
 			

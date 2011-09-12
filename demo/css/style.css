@@ -24,13 +24,6 @@ body {
 	opacity: 1;
 }
 
-.transition {
-	transition: 1s;
-	-moz-transition: 1s;
-	-webkit-transition: 1s;
-	-o-transition: 1s;
-}
-
 .fadeout {
 	opacity: 0;
 }
