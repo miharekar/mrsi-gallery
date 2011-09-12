@@ -21,12 +21,16 @@
 			this.setKeyboardShortcuts();
 		}
 		
+		var self = this;
+		
 		var removeOldImage = function () {
 			self.oldDiv.remove();
 			self.running = false;
 		};
 		
-		var self = this;
+		var stopRunning = function () {
+			self.running = false;
+		};
 		
 		this.hiddenImg.load(function () {
 			if (!self.running) {
@@ -43,13 +47,11 @@
 					self.oldDiv.fadeOut(self.transitionTime, removeOldImage);
 				}
 			} else {
-				
-				self.backgroundDiv.fadeIn(self.transitionTime, function () {
-					self.running = false;
-				});
-				
-				//console.log(self.backgroundDiv);
-				//self.backgroundDiv.removeClass('transition').addClass('fadeout').addClass('transition').removeClass('fadeout');
+				if (self.transitionType) {
+					self.backgroundDiv.css(self.transitionClass).removeClass('fadeout').bind(self.transitionType, stopRunning);
+				} else {
+					self.backgroundDiv.fadeIn(self.transitionTime, stopRunning);
+				}				
 			}
 		});
 		
@@ -58,7 +60,6 @@
 	};
 	
 	gallery.prototype.emptyDiv          = '<div class="background new"></div>';
-	gallery.prototype.backgroundDiv     = $(gallery.prototype.emptyDiv).hide().appendTo('body');
 	gallery.prototype.oldDiv			= null;
 	gallery.prototype.hiddenImg         = $('<img id="hiddenImg"/>').appendTo('body');
 	gallery.prototype.loadingDiv        = $('<div id="loading"></div>').appendTo('body');
@@ -121,16 +122,22 @@
 			var oldType = this.type;
 			this.running = true;
 			this.type = (this.type === 'cover') ? 'contain' : 'cover';
-			this.backgroundDiv.fadeOut('', function () {
-				$(this).removeClass(oldType).addClass(self.type).
-					fadeIn('', function () {
+			
+			if (self.transitionType) {
+				this.backgroundDiv.addClass('fadeout').bind(this.transitionType, function () {
+					$(this).removeClass(oldType).addClass(self.type).removeClass('fadeout').bind(self.transitionType, function () {
 						self.running = false;
 					});
-			});
-			
+				});
+			} else {
+				this.backgroundDiv.fadeOut('', function () {
+					$(this).removeClass(oldType).addClass(self.type).fadeIn('', function () {
+						self.running = false;
+					});
+				});
+			}
 			return true;
 		}
-		
 		return;
 	};
 
@@ -184,6 +191,14 @@
 
 	//adds background image to div
 	gallery.prototype.addBackgroundImage = function (image) {
+		if (this.backgroundDiv === undefined) {
+			if (this.transitionType) {
+				this.backgroundDiv = $(gallery.prototype.emptyDiv).addClass('fadeout').appendTo('body');
+			} else {
+				this.backgroundDiv = $(gallery.prototype.emptyDiv).hide().appendTo('body');
+			}			
+		}
+
 		var el = this.backgroundDiv;
 		
 		if (this.isTerribleBrowser) {
@@ -208,10 +223,8 @@
 			this.loadingDiv.show();
 			this.oldDiv.addClass('old').removeClass('new');
 			this.hiddenImg.attr('src', self.images[self.current]);
-
 			return true;
 		}
-		
 		return;
 	};
 
