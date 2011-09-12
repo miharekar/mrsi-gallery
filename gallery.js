@@ -1,4 +1,4 @@
-(function ($, window) {
+(function ($, Modernizr, window) {
 	'use strict';
 	var gallery = function (opts) {
 		var defaultOpts = {
@@ -13,6 +13,7 @@
 		
 		this.setImages(opts.images, opts.shuffle);
 		this.detectTerribleBrowser();
+		this.detectTransitionType();		
 		this.setTransitionTime(opts.transitionTime);
 		this.type = opts.type;
 		
@@ -31,7 +32,7 @@
 			self.loadingDiv.hide();
 			
 			if (self.oldDiv !== null) {
-				self.oldDiv.addClass('fadeout').bind('webkitTransitionEnd', function () {
+				self.oldDiv.addClass('fadeout').bind(self.transitionType, function () {
 					self.oldDiv.remove();
 					self.running = false;
 				});
@@ -161,6 +162,18 @@
 			this.isTerribleBrowser = parseFloat(RegExp.$1, 10) < 9;
 		}
 	};
+	
+	gallery.prototype.detectTransitionType = function () {
+		var transEndEventNames = {
+		    'WebkitTransition' : 'webkitTransitionEnd',
+		    'MozTransition'    : 'transitionend',
+		    'OTransition'      : 'oTransitionEnd',
+		    'msTransition'     : 'msTransitionEnd', // maybe?
+		    'transition'       : 'transitionEnd'
+		};
+			
+		this.transitionType = Modernizr.csstransitions ? transEndEventNames[ Modernizr.prefixed('transition') ] : false;
+	};
 
 	//adds background image to div
 	gallery.prototype.addBackgroundImage = function (image) {
@@ -214,4 +227,4 @@
 	
 	// export the constructor function to the global namespace
 	window.gallery = gallery;
-}(jQuery, window));
+}(jQuery, Modernizr, window));
