@@ -6,7 +6,7 @@
 			shuffle: false,
 			transitionTime: 1000,
 			type: 'cover',
-			cssTransitions: true,
+			cssTransitions: false,
 			keyboardShortcuts: false
 		};
 		

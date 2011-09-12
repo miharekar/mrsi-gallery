@@ -2,6 +2,7 @@ mrsi gallery
 =============
 
 mrsi gallery is a simple full screen background image gallery that uses CSS3 background-size attribute instead of JavaScript for completely filling up the browser window with images.
+It also uses CSS3 tranitions if possible to fade between the pictures so it's ultra fast.
 
 Browser Support
 -------
@@ -27,11 +28,14 @@ Requirements
 -------
 
 * jQuery
+* Modernizr - [minimum](http://www.modernizr.com/download/#-backgroundsize-csstransitions-iepp-prefixed-testprop-testallprops-domprefixes)
 
 Example usage
 -------
 ```html
+<link rel="stylesheet" href="css/style.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+<script src="js/modernizr.js"></script>
 <script src="js/gallery.min.js"></script>
 <script>
 $(function() {
@@ -41,13 +45,15 @@ $(function() {
 	//shuffle: boolean - depending on if you want to display images in random order or not
 	//transitionTime: integer - sets for how long the transition between images last on image change
 	//type: string - either 'cover' or 'contain' - gallery.toggleType toggles between them
+	//cssTransitions: boolean - if you have transtions in CSS and want to use that. It gives it major performance boost.
 	//keyboardShortcuts: boolean - if you want arrow keys to change images set to true
 	var options = {
 		images: ["images/image1.jpg", "images/image2.jpg", "images/image3.jpg"], //array of paths to images
-		shuffle: true,
-		transitionTime: 500,
+		shuffle: false,
+		transitionTime: 1000,
 		type: 'cover',
-		keyboardShortcuts: true
+		cssTransitions: false,
+		keyboardShortcuts: false
 	};
 	var myGallery = new gallery(options);
 	
