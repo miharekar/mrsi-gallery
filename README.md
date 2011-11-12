@@ -34,7 +34,7 @@ Example usage
 -------
 ```html
 <link rel="stylesheet" href="css/style.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
 <script src="js/modernizr.js"></script>
 <script src="js/gallery.min.js"></script>
 <script>
@@ -46,25 +46,23 @@ $(function() {
 	//transitionTime: integer - sets for how long the transition between images last on image change
 	//type: string - either 'cover' or 'contain' - gallery.toggleType toggles between them
 	//cssTransitions: boolean - if you have transtions in CSS and want to use that. It gives it major performance boost.
-	//keyboardShortcuts: boolean - if you want arrow keys to change images set to true
 	var options = {
 		images: ["images/image1.jpg", "images/image2.jpg", "images/image3.jpg"], //array of paths to images
 		shuffle: false,
 		transitionTime: 1000,
 		type: 'cover',
-		cssTransitions: false,
-		keyboardShortcuts: false
+		cssTransitions: false
 	};
 	var myGallery = new gallery(options);
 	
 	//set menu controls
-	$('#toggle').click(function(){
+	$('#toggle').on('click', function(){
 		myGallery.toggleType();
 	});
-	$('#previous').click(function(){
+	$('#previous').on('click', function(){
 		myGallery.previous();
 	});
-	$('#next').click(function(){
+	$('#next').on('click', function(){
 		myGallery.next();
 	});
 	
@@ -74,6 +72,19 @@ $(function() {
 		shuffle: false
 	};
 	myGallery.setNewImages(options2);
+	
+	//set keyboard shortcuts
+	$(window.document.documentElement).on('keyup', function (e) {
+		if (!myGallery.running) {
+			if (e.keyCode === 39 || e.keyCode === 38) {
+				myGallery.next();
+			}
+			
+			if (e.keyCode === 37 || e.keyCode === 40) {
+				myGallery.previous();
+			}
+		}
+	});
 });
 </script>
 ```

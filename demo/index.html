@@ -17,7 +17,7 @@
 <div id="content">
 <p>Just a simple demo of <a href="https://github.com/mrfoto/mrsi-gallery/">mrsi gallery</a>. Have a look at source for more info.</p>
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
 <script src="js/modernizr.js"></script>
 <script src="../gallery.min.js"></script>
 <script>
@@ -38,10 +38,10 @@ $(function() {
 	var myGallery = new gallery(options);
 	
 	//set menu controls
-	$('#previous').click(function(){
+	$('#previous').on('click', function(){
 		myGallery.previous();
 	});
-	$('#next').click(function(){
+	$('#next').on('click', function(){
 		myGallery.next();
 	});
 	
@@ -50,12 +50,12 @@ $(function() {
 		$('#toggle').hide();
 	}
 	else {
-		$('#toggle').click(function(){
+		$('#toggle').on('click', function(){
 			myGallery.toggleType();
 		});
 	}
 	
-	$('#transitionTime').keyup(function(){
+	$('#transitionTime').on('keyup', function(){
 		var time = parseInt($(this).val());
 		$(this).val(time);
 		myGallery.setTransitionTime(time);
@@ -63,6 +63,18 @@ $(function() {
 	
 	$('#cssEnabled').change(function(){
 		myGallery.enableCSSTransitions($(this).prop('checked'));
+	});
+	
+	$(window.document.documentElement).on('keyup', function (e) {
+		if (!myGallery.running) {
+			if (e.keyCode === 39 || e.keyCode === 38) {
+				myGallery.next();
+			}
+			
+			if (e.keyCode === 37 || e.keyCode === 40) {
+				myGallery.previous();
+			}
+		}
 	});
 });
 </script>

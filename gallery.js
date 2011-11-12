@@ -6,8 +6,7 @@
 			shuffle: false,
 			transitionTime: 1000,
 			type: 'cover',
-			cssTransitions: false,
-			keyboardShortcuts: false
+			cssTransitions: false
 		};
 		
 		opts = $.extend({}, defaultOpts, opts);
@@ -18,10 +17,6 @@
 		this.setTransitionTime(opts.transitionTime);
 		this.type = opts.type;
 		this.enableCSSTransitions(opts.cssTransitions);
-		
-		if (opts.keyboardShortcuts) {
-			this.setKeyboardShortcuts();
-		}
 		
 		var self = this;
 		
@@ -232,23 +227,6 @@
 			return true;
 		}
 		return;
-	};
-
-	//set keyboard shortcuts on arrow keys
-	gallery.prototype.setKeyboardShortcuts = function () {
-		var self = this;
-		
-		$(window.document.documentElement).keyup(function (e) {
-			if (!this.running) {
-				if (e.keyCode === 39 || e.keyCode === 38) {
-					self.next();
-				}
-				
-				if (e.keyCode === 37 || e.keyCode === 40) {
-					self.previous();
-				}
-			}
-		});
 	};
 	
 	// export the constructor function to the global namespace
