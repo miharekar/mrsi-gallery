@@ -4,20 +4,22 @@ mrsi gallery
 mrsi gallery is a simple full screen background image gallery that uses CSS3 background-size attribute instead of JavaScript for completely filling up the browser window with images.
 It also uses CSS3 tranitions if possible to fade between the pictures so it's ultra fast.
 
+NEW: Both (background-size and transitions) now fallback to JS alternatives.
+
 Browser Support
 -------
 
-It works in most modern browsers ([reference](http://www.w3schools.com/cssref/css3_pr_background-size.asp)) and it even (somewhat) works with IE < 9 but then it switches to filter attributes.
+It works super fast in modern browsers ([bg-size support](http://www.w3schools.com/cssref/css3_pr_background-size.asp) & [transition support](http://www.w3schools.com/cssref/css3_pr_transition.asp)) fast in a bit outdated browsers and acceptable in others. Should work even on IE < 6 but has not been tested (yet).
 
 Why?
 -------
 
-I needed something like that for my new website ([WIP](http://mr.si/index2.php)) and I didn't find anything like it so I made this from scratch.
+I needed something like this for my new website ([WIP](http://mr.si/index2.php)) and I didn't find anything like it so I made this from scratch. It uses all the new technologies and when they are not available it fallbacks to highly optimized JS.
 
 How far are we?
 -------
 
-It's still very much work in progress so any ideas / bug reports /suggestions are highly welcomed and appreciated.
+It's pretty much done, but any and all ideas / bug reports /suggestions are highly welcomed and appreciated.
 
 Demo
 -------
@@ -34,7 +36,7 @@ Example usage
 -------
 ```html
 <link rel="stylesheet" href="css/style.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script src="js/modernizr.js"></script>
 <script src="js/gallery.min.js"></script>
 <script>
