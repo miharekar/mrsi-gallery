@@ -6,12 +6,12 @@ mrsi-gallery is a is a simple full-screen HTML5/CSS3 background image gallery th
 Browser Support
 -------
 
-It works super fast in modern browsers ([bg-size support](http://www.w3schools.com/cssref/css3_pr_background-size.asp) & [transition support](http://www.w3schools.com/cssref/css3_pr_transition.asp)) fast in a bit outdated browsers and acceptable in others. Should work even on outdated browsers but has not (yet) been tested.
+It works super fast in modern browsers ([bg-size support](http://www.w3schools.com/cssref/css3_pr_background-size.asp) & [transition support](http://www.w3schools.com/cssref/css3_pr_transition.asp)), fast in a bit outdated browsers, and acceptable in others. Should work even in outdated browsers but has not (yet) been tested.
 
 Why?
 -------
 
-I needed HTML5 full screen gallery for my new website ([WIP](http://mr.si/index2.php)) but I didn't find anything that uses all the modern technologies available so I made one myself.
+I needed HTML5 full screen gallery for my new website ([WIP](http://mr.si/index2.php)) but I didn't find any that uses all the modern technologies now available so I made mrsi-gallery.
 
 How far are we?
 -------
@@ -21,7 +21,7 @@ It's pretty much done, but any and all ideas / bug reports / suggestions are hig
 Demo
 -------
 
-The demo is available in the folder demo (download and try localy) or online at: http://mr.si/index2.php
+The demo is available in the folder demo (download and try locally) or online at: http://mr.si/index2.php
 
 Requirements
 -------
