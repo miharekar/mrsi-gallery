@@ -24,28 +24,27 @@
 <script src="../gallery.min.js"></script>
 <script>
 $(function () {
-	//first array of images
 	var images1 = [],
 		images2 = [],
 		i = 0;
-	
+		
+	//first gallery
 	for (i = 0; i < 7; i = i + 1) {
 		images1.push('img/tumblrbg' + i + '.jpg');
 	}
 	$('#gallery1').data('images', images1);
 
-	//second array of images
+	//second gallery
 	for (i = 7; i < 13; i = i + 1) {
 		images2.push('img/tumblrbg' + i + '.jpg');
 	}
 	$('#gallery2').data('images', images2);
 
-	//init the mrsi-gallery
+	//mrsi-gallery initialization
 	var options = {
 		images: images1,
 		shuffle: true,
-		cssTransitions: true,
-		keyboardShortcuts: true
+		cssTransitions: true
 	};
 	var myGallery = new Gallery(options);
 
@@ -62,6 +61,7 @@ $(function () {
 		myGallery.toggleType();
 	});
 
+	//gallery picker
 	$('.imageGalleryPicker').on('click', function (e) {
 		if (myGallery.running) {
 			e.preventDefault();
@@ -70,20 +70,23 @@ $(function () {
 				images: $(this).data('images'),
 				shuffle: true
 			};
-			myGallery.setNewImages(options);	
+			myGallery.setNewImages(options);
 		}
 	});
 
+	//transition time setter
 	$('#transitionTime').on('keyup', function () {
 		var time = parseInt($(this).val());
 		$(this).val(time);
 		myGallery.setTransitionTime(time);
 	});
 
+	//CSS transitions toggle
 	$('#cssEnabled').change(function () {
 		myGallery.enableCSSTransitions($(this).prop('checked'));
 	});
 
+	//keyboard shortcuts
 	$(window.document.documentElement).on('keyup', function (e) {
 		if (!myGallery.running) {
 			if (e.keyCode === 39 || e.keyCode === 38) {
