@@ -11,8 +11,8 @@
 	<li id="next">Next</li>
 	<li id="previous">Previous</li>
 	<li id="toggle">Toggle size</li>
-	<li class="imageGalleryPicker" id="gallery1">First gallery</li>
-	<li class="imageGalleryPicker" id="gallery2">Second gallery</li>
+	<li><input type="radio" id="gallery1" class="imageGalleryPicker" name="imageGalleryPicker" checked = "checked"><label for="gallery1">First gallery</label></li>
+	<li><input type="radio" id="gallery2" class="imageGalleryPicker" name="imageGalleryPicker"><label for="gallery2">Second gallery</label></li>
 	<li>Transition time:<input id="transitionTime" type="text" value="1000"></li>
 	<li>Enable CSS transitions:<input id="cssEnabled" type="checkbox" value=1 checked="checked"></li>
 </ul>
@@ -62,12 +62,16 @@ $(function () {
 		myGallery.toggleType();
 	});
 
-	$('.imageGalleryPicker').on('click', function () {
-		options = {
-			images: $(this).data('images'),
-			shuffle: true
-		};
-		myGallery.setNewImages(options);
+	$('.imageGalleryPicker').on('click', function (e) {
+		if (myGallery.running) {
+			e.preventDefault();
+		} else {
+			options = {
+				images: $(this).data('images'),
+				shuffle: true
+			};
+			myGallery.setNewImages(options);	
+		}
 	});
 
 	$('#transitionTime').on('keyup', function () {
