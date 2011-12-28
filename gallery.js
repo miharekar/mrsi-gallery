@@ -1,3 +1,7 @@
+/* 
+ * This is mrsi-gallery - a simple full-screen HTML5/CSS3 background image gallery that takes full advantage of modern technologies.
+ * Get it at https://github.com/mrfoto/mrsi-gallery
+ */
 (function ($, Modernizr, window) {
 	'use strict';
 	var gallery = function (opts) {
@@ -270,5 +274,5 @@
 	};
 
 	// export the constructor function to the global namespace
-	window.gallery = gallery;
+	window.Gallery = gallery;
 }(jQuery, Modernizr, window));

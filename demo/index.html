@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>mrsi gallery demo</title>
+	<title>mrsi-gallery demo</title>
 	<link rel="shortcut icon" href="favicon.ico">
 	<link rel="stylesheet" href="../style.css">
 </head>
@@ -11,66 +11,81 @@
 	<li id="next">Next</li>
 	<li id="previous">Previous</li>
 	<li id="toggle">Toggle size</li>
+	<li class="imageGalleryPicker" id="gallery1">First gallery</li>
+	<li class="imageGalleryPicker" id="gallery2">Second gallery</li>
 	<li>Transition time:<input id="transitionTime" type="text" value="1000"></li>
 	<li>Enable CSS transitions:<input id="cssEnabled" type="checkbox" value=1 checked="checked"></li>
 </ul>
 <div id="content">
-<p>Just a simple demo of <a href="https://github.com/mrfoto/mrsi-gallery/">mrsi gallery</a>. Have a look at source for more info.</p>
+<p>Just a simple demo of <a href="https://github.com/mrfoto/mrsi-gallery/">mrsi-gallery</a>. Have a look at source for more info.</p>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script src="js/modernizr.js"></script>
 <script src="../gallery.min.js"></script>
 <script>
-$(function() {
-	//our array of images
-	var images = [];
-	for (var i = 0; i < 13; i++) {
-		images[i] = 'img/tumblrbg' + i + '.jpg';
-	}
+$(function () {
+	//first array of images
+	var images1 = [],
+		images2 = [],
+		i = 0;
 	
-	//init the mrsi gallery
+	for (i = 0; i < 7; i = i + 1) {
+		images1.push('img/tumblrbg' + i + '.jpg');
+	}
+	$('#gallery1').data('images', images1);
+
+	//second array of images
+	for (i = 7; i < 13; i = i + 1) {
+		images2.push('img/tumblrbg' + i + '.jpg');
+	}
+	$('#gallery2').data('images', images2);
+
+	//init the mrsi-gallery
 	var options = {
-		images: images,
+		images: images1,
 		shuffle: true,
 		cssTransitions: true,
-		keyboardShortcuts: true	
+		keyboardShortcuts: true
 	};
-	var myGallery = new gallery(options);
-	
+	var myGallery = new Gallery(options);
+
 	//set menu controls
-	$('#previous').on('click', function(){
+	$('#previous').on('click', function () {
 		myGallery.previous();
 	});
-	$('#next').on('click', function(){
+
+	$('#next').on('click', function () {
 		myGallery.next();
 	});
-	
-	//only display toggle to non IE < 9
-	if (myGallery.isTerribleBrowser) {
-		$('#toggle').hide();
-	}
-	else {
-		$('#toggle').on('click', function(){
-			myGallery.toggleType();
-		});
-	}
-	
-	$('#transitionTime').on('keyup', function(){
+
+	$('#toggle').on('click', function () {
+		myGallery.toggleType();
+	});
+
+	$('.imageGalleryPicker').on('click', function () {
+		options = {
+			images: $(this).data('images'),
+			shuffle: true
+		};
+		myGallery.setNewImages(options);
+	});
+
+	$('#transitionTime').on('keyup', function () {
 		var time = parseInt($(this).val());
 		$(this).val(time);
 		myGallery.setTransitionTime(time);
 	});
-	
-	$('#cssEnabled').change(function(){
+
+	$('#cssEnabled').change(function () {
 		myGallery.enableCSSTransitions($(this).prop('checked'));
 	});
-	
+
 	$(window.document.documentElement).on('keyup', function (e) {
 		if (!myGallery.running) {
 			if (e.keyCode === 39 || e.keyCode === 38) {
 				myGallery.next();
 			}
-			
+
 			if (e.keyCode === 37 || e.keyCode === 40) {
 				myGallery.previous();
 			}

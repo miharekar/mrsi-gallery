@@ -1,25 +1,22 @@
-mrsi gallery
+mrsi-gallery
 =============
 
-mrsi gallery is a simple full screen background image gallery that uses CSS3 background-size attribute instead of JavaScript for completely filling up the browser window with images.
-It also uses CSS3 tranitions if possible to fade between the pictures so it's ultra fast.
-
-NEW: Both (background-size and transitions) now fallback to JS alternatives.
+mrsi-gallery is a is a simple full-screen HTML5/CSS3 background image gallery that takes full advantage of modern technologies. It uses CSS3 background-size and transitions when available. When not it fallbacks to fully optimized JS for the same features.
 
 Browser Support
 -------
 
-It works super fast in modern browsers ([bg-size support](http://www.w3schools.com/cssref/css3_pr_background-size.asp) & [transition support](http://www.w3schools.com/cssref/css3_pr_transition.asp)) fast in a bit outdated browsers and acceptable in others. Should work even on IE < 6 but has not been tested (yet).
+It works super fast in modern browsers ([bg-size support](http://www.w3schools.com/cssref/css3_pr_background-size.asp) & [transition support](http://www.w3schools.com/cssref/css3_pr_transition.asp)) fast in a bit outdated browsers and acceptable in others. Should work even on outdated browsers but has not (yet) been tested.
 
 Why?
 -------
 
-I needed something like this for my new website ([WIP](http://mr.si/index2.php)) and I didn't find anything like it so I made this from scratch. It uses all the new technologies and when they are not available it fallbacks to highly optimized JS.
+I needed HTML5 full screen gallery for my new website ([WIP](http://mr.si/index2.php)) but I didn't find anything that uses all the modern technologies available so I made one myself.
 
 How far are we?
 -------
 
-It's pretty much done, but any and all ideas / bug reports /suggestions are highly welcomed and appreciated.
+It's pretty much done, but any and all ideas / bug reports / suggestions are highly welcomed and appreciated.
 
 Demo
 -------
@@ -41,7 +38,7 @@ Example usage
 <script src="js/gallery.min.js"></script>
 <script>
 $(function() {
-	//init the mrsi gallery
+	//init the mrsi-gallery
 	//all parameters are optional, but you should at least define the images if you want something to show :P
 	//images: the array of images to display
 	//shuffle: boolean - depending on if you want to display images in random order or not
@@ -55,7 +52,7 @@ $(function() {
 		type: 'cover',
 		cssTransitions: false
 	};
-	var myGallery = new gallery(options);
+	var myGallery = new Gallery(options);
 	
 	//set menu controls
 	$('#toggle').on('click', function(){
@@ -70,7 +67,7 @@ $(function() {
 	
 	//you can also change the images array if you plan to have multiple galleries	
 	var options2 = {
-		images: ["images2/image1.jpg", "images2/image2.jpg", "images2/image3.jpg"], //array of paths to images in gallery2
+		images: ["images2/image1.jpg", "images2/image2.jpg", "images2/image3.jpg"], //array of paths to images in second gallery
 		shuffle: false
 	};
 	myGallery.setNewImages(options2);
