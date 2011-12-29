@@ -22,6 +22,7 @@ Demo
 -------
 
 You can:
+
 * download the project and try it locally - just open the "index.html" in the "demo" folder
 * test it on my work in progress website at: http://mr.si/index2.php
 
