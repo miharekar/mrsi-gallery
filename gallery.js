@@ -1,7 +1,7 @@
 /*
-* This is mrsi-gallery - a simple full-screen HTML5/CSS3 background image gallery that takes full advantage of modern technologies.
-* Get it at https://github.com/mrfoto/mrsi-gallery
-*/
+ * This is mrsi-gallery - a simple full-screen HTML5/CSS3 background image gallery that takes full advantage of modern technologies.
+ * Get it at https://github.com/mrfoto/mrsi-gallery
+ */
 (function ($, Modernizr, window) {
 	'use strict';
 	var gallery = function (opts) {
@@ -54,7 +54,8 @@
 
 			this.running = true;
 			this.hiddenImg.attr('src', this.images[this.current]);
-		};
+		},
+		randomizeArray;
 
 	gallery.prototype.emptyDiv = '<div class="background new"></div>';
 	gallery.prototype.oldDiv = null;
@@ -80,20 +81,20 @@
 	// makes a copy of the original array so it returns the
 	// shuffled array without changing the original
 	// (implementation of the Fisher-Yates shuffle)
-	var randomizeArray = function (arr) {
-			var tmp, arrayCopy = arr.slice(),
-				i = arrayCopy.length,
-				j;
+	randomizeArray = function (arr) {
+		var tmp, arrayCopy = arr.slice(),
+			i = arrayCopy.length,
+			j;
 
-			while (i) {
-				i = i - 1;
-				j = Math.round(Math.random() * i);
-				tmp = arrayCopy[j];
-				arrayCopy[j] = arrayCopy[i];
-				arrayCopy[i] = tmp;
-			}
-			return arrayCopy;
-		};
+		while (i) {
+			i = i - 1;
+			j = Math.round(Math.random() * i);
+			tmp = arrayCopy[j];
+			arrayCopy[j] = arrayCopy[i];
+			arrayCopy[i] = tmp;
+		}
+		return arrayCopy;
+	};
 
 	//sets images array, optionally shuffles
 	gallery.prototype.setImages = function (json, shuffle) {
@@ -111,11 +112,12 @@
 		var defaultOpts = {
 			images: [],
 			shuffle: false
-		};
+		},
+			oldImage;
 
 		opts = $.extend({}, defaultOpts, opts);
 
-		var oldImage = this.images[this.current];
+		oldImage = this.images[this.current];
 		this.setImages(opts.images, opts.shuffle);
 		if (oldImage !== this.images[this.current]) {
 			this.changeImage();
@@ -124,9 +126,10 @@
 
 	//toggles between cover and contain CSS background type parameter
 	gallery.prototype.toggleType = function () {
-		var self = this;
+		var self = this,
+			oldType;
 		if (!this.running) {
-			var oldType = this.type;
+			oldType = this.type;
 			this.running = true;
 			this.type = (this.type === 'cover') ? 'contain' : 'cover';
 
@@ -135,7 +138,7 @@
 					$(this).removeClass(oldType);
 					if (!Modernizr.backgroundsize) {
 						self.resizeImage();
-					};
+					}
 					$(this).addClass(self.type).removeClass('fadeout').unbind(self.transitionType).bind(self.transitionType, function () {
 						self.running = false;
 						$(this).unbind(self.transitionType);
@@ -146,7 +149,7 @@
 					$(this).removeClass(oldType);
 					if (!Modernizr.backgroundsize) {
 						self.resizeImage();
-					};
+					}
 					$(this).addClass(self.type).fadeIn('', function () {
 						self.running = false;
 					});
@@ -230,6 +233,13 @@
 			browserRatio = browserWidth / browserHeight,
 			marginLeft = 0,
 			marginTop = 0;
+
+		//lt IE 8 fix
+		if (isNaN(browserRatio)) {
+			browserWidth = window.document.documentElement.clientWidth;
+			browserHeight = window.document.documentElement.clientHeight;
+			browserRatio = browserWidth / browserHeight;
+		}
 
 		if (this.type === 'contain') {
 			if (imageRatio > browserRatio) {

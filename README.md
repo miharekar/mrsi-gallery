@@ -6,7 +6,7 @@ mrsi-gallery is a is a simple full-screen HTML5/CSS3 background image gallery th
 Browser Support
 -------
 
-It works super fast in modern browsers ([bg-size support](http://www.w3schools.com/cssref/css3_pr_background-size.asp) & [transition support](http://www.w3schools.com/cssref/css3_pr_transition.asp)), fast in a bit outdated browsers, and acceptable in others. Should work even in outdated browsers but has not (yet) been tested.
+It works super fast in modern browsers ([bg-size support](http://www.w3schools.com/cssref/css3_pr_background-size.asp) & [transition support](http://www.w3schools.com/cssref/css3_pr_transition.asp)), fast in a bit outdated browsers, and acceptable in others. Should work even in outdated browsers (IE6 tested).
 
 Why?
 -------
