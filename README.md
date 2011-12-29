@@ -1,33 +1,35 @@
 mrsi-gallery
 =============
 
-mrsi-gallery is a is a simple full-screen HTML5/CSS3 background image gallery that takes full advantage of modern technologies. It uses CSS3 background-size and transitions when available. When not it fallbacks to fully optimized JS for the same features.
+mrsi-gallery is a is a full-screen image gallery that takes advantage of the modern browser technologies. It uses CSS3 background-size and transition attributes when available and when not it fallbacks to JavaScript.
 
 Browser Support
 -------
 
-It works super fast in modern browsers ([bg-size support](http://www.w3schools.com/cssref/css3_pr_background-size.asp) & [transition support](http://www.w3schools.com/cssref/css3_pr_transition.asp)), fast in a bit outdated browsers, and acceptable in others. Should work even in outdated browsers (IE6 tested).
+It works super fast in most modern browsers - that being browsers that support CSS3 [bg-size](http://www.w3schools.com/cssref/css3_pr_background-size.asp) and [transition](http://www.w3schools.com/cssref/css3_pr_transition.asp)) attributes. When there is no such browser support, the script fallbacks to JS which is a bit slower, but still reasonably fast. It should work in every possible browser that supports JS. That's right, it even works on the good old IE 6 :D
 
 Why?
 -------
 
-I needed HTML5 full screen gallery for my new website ([WIP](http://mr.si/index2.php)) but I didn't find any that uses all the modern technologies now available so I made mrsi-gallery.
+I needed full-screen gallery for my new website ([WIP](http://mr.si/index2.php)) but I didn't find any that uses CSS3 background-size attribute so I made mrsi-gallery.
 
-How far are we?
+Is it production ready?
 -------
 
-It's pretty much done, but any and all ideas / bug reports / suggestions are highly welcomed and appreciated.
+It is (should be? :D). Any and all ideas / bug reports / suggestions are still highly welcomed and appreciated.
 
 Demo
 -------
 
-The demo is available in the folder demo (download and try locally) or online at: http://mr.si/index2.php
+You can:
+* download the project and try it locally - just open the "index.html" in the "demo" folder
+* test it on my work in progress website at: http://mr.si/index2.php
 
 Requirements
 -------
 
-* jQuery
-* Modernizr - [minimum](http://www.modernizr.com/download/#-backgroundsize-csstransitions-iepp-prefixed-testprop-testallprops-domprefixes)
+* jQuery 1.4.3+
+* Modernizr [minimum](http://www.modernizr.com/download/#-backgroundsize-csstransitions-iepp-prefixed-testprop-testallprops-domprefixes)
 
 Example usage
 -------
