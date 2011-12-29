@@ -89,3 +89,8 @@ $(function() {
 });
 </script>
 ```
+
+License
+-------
+
+mrsi-gallery is developed by [Miha Rekar](http://mr.si/) and licensed under the [MIT License](http://creativecommons.org/licenses/MIT/)
