@@ -1,7 +1,7 @@
 mrsi-gallery
 =============
 
-mrsi-gallery is a is a full-screen image gallery that takes advantage of the modern browser technologies. It uses CSS3 background-size and transition attributes when available and when not it fallbacks to JavaScript.
+mrsi-gallery is a full-screen image gallery that takes advantage of the modern browser technologies. It uses CSS3 background-size and transition attributes when available and when not it fallbacks to JavaScript.
 
 Browser Support
 -------

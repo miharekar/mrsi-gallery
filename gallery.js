@@ -1,6 +1,8 @@
 /*
- * This is mrsi-gallery - a simple full-screen HTML5/CSS3 background image gallery that takes full advantage of modern technologies.
+ * This is mrsi-gallery - a full-screen image gallery that takes advantage of the modern browser technologies.
  * Get it at https://github.com/mrfoto/mrsi-gallery
+ *
+ * The MIT License (MIT). Copyright (c) 2011 Miha Rekar <info@mr.si>
  */
 (function ($, Modernizr, window) {
 	'use strict';
