@@ -225,7 +225,7 @@
 
 	//resizes image in browsers that don't support background-size attribute
 	gallery.prototype.resizeImage = function () {
-		var image = $('.resizableImage'),
+		var image = $('img.resizableImage'),
 			parent = image.parent(),
 			imageWidth = image.width(),
 			imageHeight = image.height(),
