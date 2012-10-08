@@ -29,7 +29,7 @@ You can:
 Requirements
 -------
 
-* jQuery 1.4.3+
+* jQuery 1.7+
 * Modernizr [minimum](http://www.modernizr.com/download/#-backgroundsize-csstransitions-iepp-prefixed-testprop-testallprops-domprefixes)
 
 Example usage
