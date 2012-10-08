@@ -41,13 +41,13 @@
 
 				if (self.oldDiv !== null) {
 					if (self.transitionType) {
-						self.oldDiv.css(self.transitionClass).addClass('fadeout').bind(self.transitionType, removeOldImage);
+						self.oldDiv.css(self.transitionClass).addClass('fadeout').on(self.transitionType, removeOldImage);
 					} else {
 						self.oldDiv.fadeOut(self.transitionTime, removeOldImage);
 					}
 				} else {
 					if (self.transitionType) {
-						self.backgroundDiv.css(self.transitionClass).removeClass('fadeout').bind(self.transitionType, stopRunning);
+						self.backgroundDiv.css(self.transitionClass).removeClass('fadeout').on(self.transitionType, stopRunning);
 					} else {
 						self.backgroundDiv.fadeIn(self.transitionTime, stopRunning);
 					}
@@ -136,14 +136,14 @@
 			this.type = (this.type === 'cover') ? 'contain' : 'cover';
 
 			if (self.transitionType) {
-				this.backgroundDiv.css(self.transitionClass).addClass('fadeout').bind(this.transitionType, function () {
+				this.backgroundDiv.css(self.transitionClass).addClass('fadeout').on(this.transitionType, function () {
 					$(this).removeClass(oldType);
 					if (!Modernizr.backgroundsize) {
 						self.resizeImage();
 					}
-					$(this).addClass(self.type).removeClass('fadeout').unbind(self.transitionType).bind(self.transitionType, function () {
+					$(this).addClass(self.type).removeClass('fadeout').off(self.transitionType).on(self.transitionType, function () {
 						self.running = false;
-						$(this).unbind(self.transitionType);
+						$(this).off(self.transitionType);
 					});
 				});
 			} else {
