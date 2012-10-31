@@ -30,6 +30,12 @@
 			this.setTransitionTime(opts.transitionTime);
 			this.type = opts.type;
 			this.enableCSSTransitions(opts.cssTransitions);
+			this.emptyTransitionClass = {
+				'transition': '',
+				'-moz-transition': '',
+				'-webkit-transition': '',
+				'-o-transition': ''
+			};
 
 			this.hiddenImg.load(function () {
 				if (!self.running) {
@@ -47,7 +53,8 @@
 					}
 				} else {
 					if (self.transitionType) {
-						self.backgroundDiv.css(self.transitionClass).removeClass('fadeout').on(self.transitionType, stopRunning);
+						window.tempFadeoutFix = self.backgroundDiv.css(self.transitionClass).on(self.transitionType, stopRunning);
+						setTimeout("window.tempFadeoutFix.removeClass('fadeout')", 0);
 					} else {
 						self.backgroundDiv.fadeIn(self.transitionTime, stopRunning);
 					}
@@ -78,6 +85,9 @@
 
 	gallery.prototype.enableCSSTransitions = function (enable) {
 		this.transitionType = enable ? this.detectTransitionType() : false;
+		if (!this.transitionType) {
+			this.backgroundDiv.css(this.emptyTransitionClass);
+		}
 	};
 
 	// makes a copy of the original array so it returns the
@@ -147,12 +157,12 @@
 					});
 				});
 			} else {
-				this.backgroundDiv.fadeOut('', function () {
+				this.backgroundDiv.fadeOut(self.transitionTime, function () {
 					$(this).removeClass(oldType);
 					if (!Modernizr.backgroundsize) {
 						self.resizeImage();
 					}
-					$(this).addClass(self.type).fadeIn('', function () {
+					$(this).addClass(self.type).fadeIn(self.transitionTime, function () {
 						self.running = false;
 					});
 				});
