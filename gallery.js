@@ -85,7 +85,7 @@
 
 	gallery.prototype.enableCSSTransitions = function (enable) {
 		this.transitionType = enable ? this.detectTransitionType() : false;
-		if (!this.transitionType) {
+		if (!this.transitionType && this.backgroundDiv) {
 			this.backgroundDiv.css(this.emptyTransitionClass);
 		}
 	};
@@ -202,12 +202,13 @@
 	};
 
 	gallery.prototype.detectTransitionType = function () {
-		var transEndEventNames = {
-			'WebkitTransition': 'webkitTransitionEnd',
-			'MozTransition': 'transitionend',
-			'OTransition': 'oTransitionEnd',
-			'transition': 'transitionEnd'
-		};
+    var transEndEventNames = {
+      'WebkitTransition' : 'webkitTransitionEnd',
+      'MozTransition'    : 'transitionend',
+      'OTransition'      : 'oTransitionEnd',
+      'msTransition'     : 'MSTransitionEnd',
+      'transition'       : 'transitionend'
+    }
 
 		return Modernizr.csstransitions ? transEndEventNames[Modernizr.prefixed('transition')] : false;
 	};
