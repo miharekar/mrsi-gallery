@@ -53,8 +53,7 @@
 					}
 				} else {
 					if (self.transitionType) {
-						window.tempFadeoutFix = self.backgroundDiv.css(self.transitionClass).on(self.transitionType, stopRunning);
-						setTimeout("window.tempFadeoutFix.removeClass('fadeout')", 0);
+						setTimeout(function(){self.backgroundDiv.css(self.transitionClass).on(self.transitionType, stopRunning).removeClass('fadeout');}, 0);
 					} else {
 						self.backgroundDiv.fadeIn(self.transitionTime, stopRunning);
 					}
@@ -208,7 +207,7 @@
       'OTransition'      : 'oTransitionEnd',
       'msTransition'     : 'MSTransitionEnd',
       'transition'       : 'transitionend'
-    }
+    };
 
 		return Modernizr.csstransitions ? transEndEventNames[Modernizr.prefixed('transition')] : false;
 	};
