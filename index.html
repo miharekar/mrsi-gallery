@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>mrsi-gallery by mrfoto</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>mrsi-gallery</h1>
+          <h2>mrsi-gallery is a full-screen image gallery that takes advantage of CSS3.</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/mrfoto/mrsi-gallery/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/mrfoto/mrsi-gallery/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/mrfoto/mrsi-gallery" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>
+<a name="mrsi-gallery" class="anchor" href="#mrsi-gallery"><span class="octicon octicon-link"></span></a>mrsi-gallery</h1>
+
+<p>mrsi-gallery is a full-screen image gallery that takes advantage of the modern browser technologies. It uses CSS3 background-size and transition attributes when available and when not it fallbacks to JavaScript.</p>
+
+<h2>
+<a name="browser-support" class="anchor" href="#browser-support"><span class="octicon octicon-link"></span></a>Browser Support</h2>
+
+<p>It works super fast in most modern browsers - that being browsers that support CSS3 <a href="http://www.w3schools.com/cssref/css3_pr_background-size.asp">background-size</a> and <a href="http://www.w3schools.com/cssref/css3_pr_transition.asp">transition</a> attributes. When there is no such browser support, the script fallbacks to JS which is a bit slower, but still reasonably fast. It should work in every possible browser that supports JS. That's right, it even works on the good old IE 6 :D</p>
+
+<h2>
+<a name="why" class="anchor" href="#why"><span class="octicon octicon-link"></span></a>Why?</h2>
+
+<p>I needed full-screen gallery for my new website (<a href="http://mr.si/index2.php">WIP</a>) but I didn't find any that uses CSS3 background-size attribute so I made mrsi-gallery.</p>
+
+<h2>
+<a name="is-it-production-ready" class="anchor" href="#is-it-production-ready"><span class="octicon octicon-link"></span></a>Is it production ready?</h2>
+
+<p>It is (should be? :D). Any and all ideas / bug reports / suggestions are still highly welcomed and appreciated.</p>
+
+<h2>
+<a name="demo" class="anchor" href="#demo"><span class="octicon octicon-link"></span></a>Demo</h2>
+
+<p>You can:</p>
+
+<ul>
+<li>download the project and try it locally - just open the "index.html" in the "demo" folder</li>
+<li>test it on my work in progress website at: <a href="http://mr.si/index2.php">http://mr.si/index2.php</a>
+</li>
+</ul><h2>
+<a name="requirements" class="anchor" href="#requirements"><span class="octicon octicon-link"></span></a>Requirements</h2>
+
+<ul>
+<li>jQuery 1.7+</li>
+<li>Modernizr <a href="http://www.modernizr.com/download/#-backgroundsize-csstransitions-iepp-prefixed-testprop-testallprops-domprefixes">minimum</a>
+</li>
+</ul><h2>
+<a name="example-usage" class="anchor" href="#example-usage"><span class="octicon octicon-link"></span></a>Example usage</h2>
+
+<div class="highlight"><pre><span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"css/style.css"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"js/modernizr.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"js/gallery.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script&gt;</span>
+<span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">//init the mrsi-gallery</span>
+    <span class="c1">//all parameters are optional, but you should at least define the images if you want something to show :P</span>
+    <span class="c1">//images: the array of images to display</span>
+    <span class="c1">//shuffle: boolean - depending on if you want to display images in random order or not</span>
+    <span class="c1">//transitionTime: integer - sets for how long the transition between images last on image change</span>
+    <span class="c1">//type: string - either 'cover' or 'contain' - gallery.toggleType toggles between them</span>
+    <span class="c1">//cssTransitions: boolean - if you have transtions in CSS and want to use that. It gives it major performance boost.</span>
+    <span class="kd">var</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nx">images</span><span class="o">:</span> <span class="p">[</span><span class="s2">"images/image1.jpg"</span><span class="p">,</span> <span class="s2">"images/image2.jpg"</span><span class="p">,</span> <span class="s2">"images/image3.jpg"</span><span class="p">],</span> <span class="c1">//array of paths to images</span>
+        <span class="nx">shuffle</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+        <span class="nx">transitionTime</span><span class="o">:</span> <span class="mi">1000</span><span class="p">,</span>
+        <span class="nx">type</span><span class="o">:</span> <span class="s1">'cover'</span><span class="p">,</span>
+        <span class="nx">cssTransitions</span><span class="o">:</span> <span class="kc">false</span>
+    <span class="p">};</span>
+    <span class="kd">var</span> <span class="nx">myGallery</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Gallery</span><span class="p">(</span><span class="nx">options</span><span class="p">);</span>
+
+    <span class="c1">//set menu controls</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s1">'#toggle'</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">'click'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">myGallery</span><span class="p">.</span><span class="nx">toggleType</span><span class="p">();</span>
+    <span class="p">});</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s1">'#previous'</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">'click'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">myGallery</span><span class="p">.</span><span class="nx">previous</span><span class="p">();</span>
+    <span class="p">});</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s1">'#next'</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">'click'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">myGallery</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span>
+    <span class="p">});</span>
+
+    <span class="c1">//you can also change the images array if you plan to have multiple galleries   </span>
+    <span class="kd">var</span> <span class="nx">options2</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nx">images</span><span class="o">:</span> <span class="p">[</span><span class="s2">"images2/image1.jpg"</span><span class="p">,</span> <span class="s2">"images2/image2.jpg"</span><span class="p">,</span> <span class="s2">"images2/image3.jpg"</span><span class="p">],</span> <span class="c1">//array of paths to images in second gallery</span>
+        <span class="nx">shuffle</span><span class="o">:</span> <span class="kc">false</span>
+    <span class="p">};</span>
+    <span class="nx">myGallery</span><span class="p">.</span><span class="nx">setNewImages</span><span class="p">(</span><span class="nx">options2</span><span class="p">);</span>
+
+    <span class="c1">//set keyboard shortcuts</span>
+    <span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nb">document</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">'keyup'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">myGallery</span><span class="p">.</span><span class="nx">running</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">keyCode</span> <span class="o">===</span> <span class="mi">39</span> <span class="o">||</span> <span class="nx">e</span><span class="p">.</span><span class="nx">keyCode</span> <span class="o">===</span> <span class="mi">38</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">myGallery</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">keyCode</span> <span class="o">===</span> <span class="mi">37</span> <span class="o">||</span> <span class="nx">e</span><span class="p">.</span><span class="nx">keyCode</span> <span class="o">===</span> <span class="mi">40</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">myGallery</span><span class="p">.</span><span class="nx">previous</span><span class="p">();</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+<span class="nt">&lt;/script&gt;</span>
+</pre></div>
+
+<h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>mrsi-gallery is developed by <a href="http://mr.si/">Miha Rekar</a> and licensed under the <a href="http://creativecommons.org/licenses/MIT/">MIT License</a></p>
+        </section>
+
+        <footer>
+          mrsi-gallery is maintained by <a href="https://github.com/mrfoto">mrfoto</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
