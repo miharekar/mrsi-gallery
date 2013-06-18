@@ -11,7 +11,7 @@ It works super fast in most modern browsers - that being browsers that support C
 Why?
 -------
 
-I needed full-screen gallery for my new website ([WIP](http://mr.si/index2.php)) but I didn't find any that uses CSS3 background-size attribute so I made mrsi-gallery.
+I needed full-screen gallery for my new website ([WIP](http://mr.si/newsite)) but I didn't find any that uses CSS3 background-size attribute so I made mrsi-gallery.
 
 Is it production ready?
 -------
@@ -24,7 +24,7 @@ Demo
 You can:
 
 * download the project and try it locally - just open the "index.html" in the "demo" folder
-* test it on my work in progress website at: http://mr.si/index2.php
+* test it on GitHub Pages - [mrsi gallery demo](http://mrfoto.github.io/mrsi-gallery/)
 
 Requirements
 -------
@@ -56,7 +56,7 @@ $(function() {
 		cssTransitions: false
 	};
 	var myGallery = new Gallery(options);
-	
+
 	//set menu controls
 	$('#toggle').on('click', function(){
 		myGallery.toggleType();
@@ -67,21 +67,21 @@ $(function() {
 	$('#next').on('click', function(){
 		myGallery.next();
 	});
-	
-	//you can also change the images array if you plan to have multiple galleries	
+
+	//you can also change the images array if you plan to have multiple galleries
 	var options2 = {
 		images: ["images2/image1.jpg", "images2/image2.jpg", "images2/image3.jpg"], //array of paths to images in second gallery
 		shuffle: false
 	};
 	myGallery.setNewImages(options2);
-	
+
 	//set keyboard shortcuts
 	$(window.document.documentElement).on('keyup', function (e) {
 		if (!myGallery.running) {
 			if (e.keyCode === 39 || e.keyCode === 38) {
 				myGallery.next();
 			}
-			
+
 			if (e.keyCode === 37 || e.keyCode === 40) {
 				myGallery.previous();
 			}
